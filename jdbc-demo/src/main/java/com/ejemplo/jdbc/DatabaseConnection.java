@@ -19,4 +19,16 @@ public class DatabaseConnection {
         }
         return conn;
     }
+
+    public static void cerrarConexion(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+                System.out.println("Conexion cerrada correctamente");
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion: ");
+                e.printStackTrace();
+            }
+        }
+    }
 }
