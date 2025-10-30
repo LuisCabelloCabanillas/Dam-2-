@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
+#include <stdbool.h>
+
+#include <stdbool.h>
+
 #include <stdbool.h>
 
 bool numeros_primos(int n){
@@ -41,7 +44,7 @@ int main() {
             exit(EXIT_FAILURE);
         }
 
-        printf("Hijo: Números recibidos");
+        printf("Hijo: Números recibidos\n");
 
 
         int primos[10];
@@ -77,7 +80,7 @@ int main() {
             numeros[i] = i + 1;
         }
 
-        printf("Padre: Enviando numeros al hijo");
+        printf("Padre: Enviando numeros al hijo\n");
         write(pipe1[1], numeros, sizeof(numeros));
 
         int count=0, suma=0;
@@ -88,21 +91,15 @@ int main() {
         read(pipe2[0], primos, count * sizeof(int));
         read(pipe2[0], &suma, sizeof(int));
 
-        printf("Padre: numeros primos recibidos");
+        printf("Padre: numeros primos recibidos: ");
         for (int i = 0; i < count;i++){
-            printf("%d",primos[i]);
+            printf("%d ",primos[i]);
         }
 
         printf("\nPadre: Suma del total: %d\n",suma);
 
         close(pipe1[1]);
         close(pipe2[0]);
-
-        wait(NULL);
-        printf("Padre: Proceso hijo finalizado.\n");
     }
     return 0;
-    
-    
-
 }
