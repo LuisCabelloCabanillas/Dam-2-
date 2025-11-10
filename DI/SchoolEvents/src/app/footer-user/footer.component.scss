@@ -1,0 +1,83 @@
+.ion-footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.menu-container {
+  background-color: #c4c4c4;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.hamburgesa {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 24px;
+  margin: 0 auto;
+}
+
+.hamburgesa span{
+  display: block;
+  width: 26px;
+  height: 3px;
+  background-color: #383838;
+  border-radius: 2px;
+  margin: 3px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+  opacity: 0;
+  margin-top: 15px;
+}
+
+.menu-container.open .menu-buttons {
+  display: flex;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ion-button {
+  --border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 16px;
+  width: 70%;
+}
+
+.boton1{
+  --background: #EB5E22;
+}
+.boton2{
+  --background: #F36C53;
+}
+
+.icono {
+  margin-left: 20%;
+  width: 4vh;
+}
+
+.Textbot{
+  margin-left: 20%;
+}

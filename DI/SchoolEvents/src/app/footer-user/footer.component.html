@@ -1,0 +1,22 @@
+<ion-footer>
+  <div class="menu-container" [class.open]="menuOpen">
+
+    <div class="hamburgesa" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="menu-buttons">
+      <ion-button class="boton1" shape="round" size="small" routerLink="">
+        <p class="Textbot">INSCRIBIRSE</p> <img src="assets/icon/+.png" class="icono">
+        <ion-icon name="add-circle-outline" slot="end"></ion-icon>
+      </ion-button>
+
+      <ion-button class="boton2" shape="round" size="small" routerLink="">
+        <p class="Textbot">OPINIONES</p> <img src="assets/icon/opiniones.png" class="icono">
+        <ion-icon name="people-outline" slot="end"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-footer>

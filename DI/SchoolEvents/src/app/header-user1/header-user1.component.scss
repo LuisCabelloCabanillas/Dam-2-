@@ -1,0 +1,23 @@
+.header-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.imagenIz{
+  margin-left: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.imagenDe{
+  margin-left: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.boton{
+  --background: #fdfdfd;
+  --box-shadow: none;
+}
