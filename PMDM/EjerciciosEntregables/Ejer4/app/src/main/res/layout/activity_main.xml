@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="3"
+        android:columnCount="3"
+        android:padding="8dp"
+        >
+
+        <FrameLayout
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#2E9587" />
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#4BAE4F"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#8AC149"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#6639B6"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#3E50B4"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#3595F1"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#E71D61"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#F24236"
+            android:layout_margin="8dp"/>
+
+        <FrameLayout
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="#EBA189"
+            android:layout_margin="8dp"/>
+
+    </GridLayout>
+
+
+</FrameLayout>
