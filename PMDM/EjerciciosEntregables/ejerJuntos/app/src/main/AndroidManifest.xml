@@ -12,6 +12,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EjerJuntos">
         <activity
+            android:name=".Actividad6"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad5"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad4"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad3_4"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad3_3"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad3_2"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad3_1"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad3"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad2_1"
+            android:exported="false" />
+        <activity
+            android:name=".Actividad2"
+            android:exported="false" />
+        <activity
             android:name=".Actividad1"
             android:exported="false" />
         <activity

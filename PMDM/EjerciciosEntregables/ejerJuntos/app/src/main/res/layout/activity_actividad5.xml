@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/Pantalla"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:textSize="36dp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        android:padding="16dp"
+        android:text="0" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2,3"
+        app:layout_constraintTop_toBottomOf="@+id/Pantalla">
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/boton7"
+                style="@style/CalcBoton"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/boton8"
+                style="@style/CalcBoton"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/boton9"
+                style="@style/CalcBoton"
+                android:text="9" />
+
+            <Button
+                android:id="@+id/botonDiv"
+                style="@style/CalcBoton"
+                android:text="/" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/boton4"
+                style="@style/CalcBoton"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/boton5"
+                style="@style/CalcBoton"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/boton6"
+                style="@style/CalcBoton"
+                android:text="6" />
+
+            <Button
+                android:id="@+id/botonMul"
+                style="@style/CalcBoton"
+                android:text="*" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/boton1"
+                style="@style/CalcBoton"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/boton2"
+                style="@style/CalcBoton"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/boton3"
+                style="@style/CalcBoton"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/botonRes"
+                style="@style/CalcBoton"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/boton0"
+                style="@style/CalcBoton"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/botonPun"
+                style="@style/CalcBoton"
+                android:text="." />
+
+            <Button
+                android:id="@+id/botonIgu"
+                style="@style/CalcBoton"
+                android:text="=" />
+
+            <Button
+                android:id="@+id/botonSum"
+                style="@style/CalcBoton"
+                android:text="+" />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/botonLim"
+                android:text="C"
+                android:layout_span="4"
+                style="@style/CalcBoton"
+                />
+        </TableRow>
+
+
+    </TableLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

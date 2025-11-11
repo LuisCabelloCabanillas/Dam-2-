@@ -18,5 +18,25 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Actividad1::class.java)
             startActivity(intent)
         }
+        findViewById<Button>(R.id.Botón2).setOnClickListener {
+            val intent = Intent(this, Actividad2::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.Botón3).setOnClickListener {
+            val intent = Intent(this, Actividad3_2::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.Botón4).setOnClickListener {
+            val intent = Intent(this, Actividad4::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.Botón5).setOnClickListener {
+            val intent = Intent(this, Actividad5::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.Botón6).setOnClickListener {
+            val intent = Intent(this, Actividad6::class.java)
+            startActivity(intent)
+        }
     }
 }
