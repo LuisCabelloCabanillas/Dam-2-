@@ -16,4 +16,5 @@ export const routes: Routes = [
     path: 'pag1-user',
     loadComponent: () => import('./pag1-user/pag1-user.page').then( m => m.Pag1UserPage)
   },
+
 ];
