@@ -19,6 +19,18 @@ export const routes: Routes = [
   {
     path: 'not-rec',
     loadComponent: () => import('./not-rec/not-rec.page').then( m => m.NotRecPage)
+  },
+  {
+    path: 'opiniones',
+    loadComponent: () => import('./opiniones/opiniones.page').then( m => m.OpinionesPage)
+  },
+  {
+    path: 'lista-eventos',
+    loadComponent: () => import('./lista-eventos/lista-eventos.page').then( m => m.ListaEventosPage)
+  },
+  {
+    path: 'evento1',
+    loadComponent: () => import('./evento1/evento1.page').then( m => m.Evento1Page)
   }
 
 ];

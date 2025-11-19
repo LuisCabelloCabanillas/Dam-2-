@@ -10,7 +10,6 @@ import {RouterLink} from "@angular/router";
     IonButton,
     IonIcon,
     IonFooter,
-    IonContent,
     RouterLink
   ]
 })
@@ -21,6 +20,7 @@ export class FooterComponent  implements OnInit {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
+
 
   ngOnInit() {}
 
