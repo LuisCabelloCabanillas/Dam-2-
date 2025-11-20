@@ -31,6 +31,34 @@ export const routes: Routes = [
   {
     path: 'evento1',
     loadComponent: () => import('./evento1/evento1.page').then( m => m.Evento1Page)
+  },  {
+    path: 'pago',
+    loadComponent: () => import('./pago/pago.page').then( m => m.PagoPage)
+  },
+  {
+    path: 'evento2',
+    loadComponent: () => import('./evento2/evento2.page').then( m => m.Evento2Page)
+  },
+  {
+    path: 'pago-aceptado',
+    loadComponent: () => import('./pago-aceptado/pago-aceptado.page').then( m => m.PagoAceptadoPage)
+  },
+  {
+    path: 'pago-denegado',
+    loadComponent: () => import('./pago-denegado/pago-denegado.page').then( m => m.PagoDenegadoPage)
+  },
+  {
+    path: 'pag1-admin',
+    loadComponent: () => import('./pag1-admin/pag1-admin.page').then( m => m.Pag1AdminPage)
+  },
+  {
+    path: 'anadir-evento',
+    loadComponent: () => import('./anadir-evento/anadir-evento.page').then( m => m.AnadirEventoPage)
+  },
+  {
+    path: 'pagina-anadir',
+    loadComponent: () => import('./pagina-anadir/pagina-anadir.page').then( m => m.PaginaAnadirPage)
   }
+
 
 ];

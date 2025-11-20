@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {IonContent} from "@ionic/angular/standalone";
+import {IonButton, IonContent, IonHeader, IonToolbar} from "@ionic/angular/standalone";
 import {IonicModule} from "@ionic/angular";
 import {CalendarioComponent} from "../calendario-evento/calendario.component";
 import {EventosInstitutoComponent} from "../eventos-instituto/eventos-instituto.component";
@@ -15,6 +15,9 @@ import {RouterLink} from "@angular/router";
     CalendarioComponent,
     EventosInstitutoComponent,
     RouterLink,
+    IonButton,
+    IonToolbar,
+    IonHeader,
   ]
 })
 export class InicioComponent  implements OnInit {

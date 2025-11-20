@@ -20,7 +20,7 @@ import {CalendarioComponent} from "../calendario-evento/calendario.component";
   templateUrl: './pag1-user.page.html',
   styleUrls: ['./pag1-user.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, CommonModule, FormsModule, IonDatetime, FooterComponent, IonFooter, HeaderUser1Component]
+  imports: [IonContent, IonHeader, CommonModule, FormsModule, IonDatetime, FooterComponent, IonFooter, HeaderUser1Component, IonButton, RouterLink]
 })
 export class Pag1UserPage implements OnInit {
   menuOpen = false;

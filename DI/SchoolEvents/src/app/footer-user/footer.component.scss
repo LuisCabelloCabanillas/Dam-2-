@@ -33,7 +33,7 @@
   transition: all 0.3s ease-in-out;
 }
 
-.menu-buttons {
+.menu-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -42,7 +42,7 @@
   margin-top: 15px;
 }
 
-.menu-container.open .menu-buttons {
+.menu-container.open .menu-btn {
   display: flex;
   animation: fadeIn 0.6s ease forwards;
 }
@@ -74,10 +74,10 @@ ion-button {
 }
 
 .icono {
-  margin-left: 20%;
+  margin-left: 15%;
   width: 4vh;
 }
 
-.Textbot{
+.texto{
   margin-left: 20%;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {IonButton, IonContent, IonDatetime, IonHeader, IonRouterLink} from "@ionic/angular/standalone";
+import {IonButton, IonContent, IonDatetime, IonHeader, IonRouterLink, IonToolbar} from "@ionic/angular/standalone";
 import {RouterLink} from "@angular/router";
 import {HeaderUser1Component} from "../header-user1/header-user1.component";
 import {CrearIniciarSesionBotsComponent} from "../crear-iniciar-sesion-bots/crear-iniciar-sesion-bots.component";
@@ -18,6 +18,7 @@ import {CrearIniciarSesionBotsComponent} from "../crear-iniciar-sesion-bots/crea
     HeaderUser1Component,
     IonHeader,
     CrearIniciarSesionBotsComponent,
+    IonToolbar,
   ]
 })
 export class CalendarioComponent  implements OnInit {

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="fotos">
+      <ion-button class="boton" routerLink="/anadir-evento">
+        <img src="assets/icon/FotoSchoolEvent.png" alt="SchoolEvents Logo" class="imagenIz"/>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="contenedor-principal">
+  <div class="forma-caja">
+    <label class="etiqueta">Día del evento:</label>
+    <ion-input type="date" placeholder="Día del Evento" class="Escritura"></ion-input>
+
+    <label class="etiqueta">Nombre del evento:</label>
+    <ion-input placeholder="Nombre" class="Escritura"></ion-input>
+
+    <label class="etiqueta">Lugar/Localización del evento:</label>
+    <ion-input placeholder="Localización" class="Escritura"></ion-input>
+
+    <label class="etiqueta">En qué consiste el evento:</label>
+    <ion-textarea placeholder="Descripción" class="Texto"></ion-textarea>
+
+    <label class="etiqueta">Requisitos para poder inscribirse en el evento:</label>
+    <ion-textarea placeholder="Requisitos" class="Texto"></ion-textarea>
+
+  </div>
+
+  <div class="caja-btn">
+    <ion-button routerLink="/pag1-admin" expand="block" class="btn-añadir">Añadir Evento</ion-button>
+  </div>
+
+</ion-content>

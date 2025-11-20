@@ -1,0 +1,34 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonHeader, IonInput, IonItem, IonLabel,
+  IonTitle,
+  IonToolbar
+} from '@ionic/angular/standalone';
+import {RouterLink} from "@angular/router";
+
+@Component({
+  selector: 'app-pago',
+  templateUrl: './pago.page.html',
+  styleUrls: ['./pago.page.scss'],
+  standalone: true,
+  imports: [IonContent, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonInput, IonItem, IonLabel, RouterLink]
+})
+export class PagoPage implements OnInit {
+
+  constructor() { }
+  soloNumeros(event: any) {
+    const valor = event.target.value;
+    event.target.value = valor.replace(/[^0-9]/g, '');
+  }
+
+
+  ngOnInit() {
+  }
+
+}

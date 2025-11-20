@@ -1,0 +1,27 @@
+<ion-footer>
+  <div class="contenedor" [class.open]="menuOpen">
+
+    <div class="hamburguesa" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="menu-contenido">
+      <ion-button class="aña-btn" shape="round" size="small" routerLink="/anadir-evento">
+        AÑADIR EVENTO
+      </ion-button>
+
+      <ion-button class="boton1" shape="round" size="small" routerLink="/lista-eventos">
+        INSCRIBIRSE
+        <img src="assets/icon/+.png" class="icono">
+      </ion-button>
+
+      <ion-button class="boton3" shape="round" size="small" routerLink="/opiniones">
+        OPINIONES
+        <img src="assets/icon/opiniones.png" class="icono">
+      </ion-button>
+    </div>
+
+  </div>
+</ion-footer>
