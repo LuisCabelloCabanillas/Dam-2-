@@ -82,3 +82,14 @@ id_usuario int not null,
 constraint fk_Comentario_eventos
 foreign key (id_usuario) references Usuario(id)
 );
+
+
+ALTER TABLE Usuario
+ADD COLUMN tipo ENUM('Admin', 'User');
+
+SELECT * 
+FROM Usuario;
+
+UPDATE Usuario
+SET tipo = 'User'
+WHERE id = 3;
