@@ -2,6 +2,7 @@ package org.example.appschoolevent.modelo;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.appschoolevent.enums.TipoCategoria;
 
 import java.time.LocalDate;
 
@@ -34,9 +35,6 @@ public class Evento {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "categoria")
-    private String categoria;
+    private TipoCategoria categoria;
 
-    public enum TipoCategoria {
-        Deportivo, Ciencia, Cultural, otros
-    }
 }
