@@ -31,4 +31,12 @@ public class Evento {
 
     @Column(name = "consiste")
     private String consiste;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria")
+    private String categoria;
+
+    public enum TipoCategoria {
+        Deportivo, Ciencia, Cultural, otros
+    }
 }

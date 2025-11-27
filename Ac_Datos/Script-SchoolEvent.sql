@@ -3,28 +3,28 @@ use SchoolEvent;
 
 create or replace table Usuario(
 id int auto_increment primary key,
-nombre varchar(20),
+nombre varchar(50),
 apellido varchar(60),
 contrasena varchar(100),
-Fecha_de_nacimiento date,
+fecha_de_nacimiento date,
 correo varchar(50)
 );
 
 create or replace table Eventos(
 id int auto_increment primary key,
-nombre varchar(20),
-Lugar varchar(60),
-Requisitos varchar(150),
-Fecha date,
-Consiste varchar(50)
+nombre varchar(60),
+lugar varchar(60),
+requisitos varchar(150),
+fecha date,
+consiste varchar(50)
 );
 
 create or replace table Recor_Noti(
 id int auto_increment primary key,
 nombre varchar(20),
-Lugar varchar(60),
-Fecha date,
-Hora TIME
+lugar varchar(60),
+fecha date,
+hora TIME
 );
 
 create or replace table Inscripcion(
@@ -40,7 +40,7 @@ foreign key (id_evento) references Eventos(id)
 create or replace table Pago(
 id int auto_increment primary key,
 fecha date,
-Estado int(1),
+estado int(1),
 id_usuario int not null,
 id_eventos int not null,
 constraint fk_pago_usuario
@@ -69,7 +69,7 @@ foreign key (id_usuario) references Usuario(id)
 
 create or replace table Fotos(
 id int auto_increment primary key,
-Foto blob,
+foto blob,
 id_eventos int not null,
 constraint fk_foto_eventos
 foreign key (id_eventos) references Eventos(id)
@@ -87,9 +87,36 @@ foreign key (id_usuario) references Usuario(id)
 ALTER TABLE Usuario
 ADD COLUMN tipo ENUM('Admin', 'User');
 
+ALTER TABLE eventos 
+ADD COLUMN categoria ENUM('Deportivo', 'Ciencia', 'Cultural', 'otros');
+
 SELECT * 
 FROM Usuario;
 
-UPDATE Usuario
-SET tipo = 'User'
-WHERE id = 3;
+SELECT * 
+FROM eventos;
+
+INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
+VALUES
+('Olimpiadas Escolares', 'Cancha Principal', 'Estar inscrito en el colegio', '2025-05-10', 'Competencias deportivas', 'Deportivo');
+
+INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
+VALUES
+('Feria de Ciencia Escolar', 'Laboratorio de Ciencias', 'Proyecto aprobado', '2025-06-25', 'Exposición de proyectos científicos', 'Ciencia');
+
+INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
+VALUES
+('Festival de Talentos', 'Auditorio del Colegio', 'Inscripción previa', '2025-08-15', 'Presentación de talentos artísticos', 'Cultural');
+
+INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
+VALUES
+('Jornada de Limpieza', 'Patio y áreas comunes', 'Participación voluntaria', '2025-03-12', 'Actividad de limpieza general', 'otros');
+
+show tables;
+
+describe eventos;
+
+select *
+from eventos e
+where e.fecha = '2025-05-10'
+and e.categoria = 'Deportivo';

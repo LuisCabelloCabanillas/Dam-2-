@@ -11,4 +11,5 @@ public class EventoDTO {
     private String requisitos;
     private LocalDate fecha;
     private String consiste;
+    private String categoria;
 }
