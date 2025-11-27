@@ -1,9 +1,10 @@
 package org.example.appschoolevent.repositorio;
 
-import org.example.appschoolevent.modelo.LineaPedido;
+import org.example.appschoolevent.modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ILineaPedidoRepositorio extends JpaRepository<LineaPedido, Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    boolean existsByCorreo(String correo);
 }
