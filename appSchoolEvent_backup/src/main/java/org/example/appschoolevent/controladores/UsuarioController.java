@@ -14,12 +14,8 @@ public class UsuarioController {
     private UsuarioService usuarioServicio;
 
     @PostMapping("/registrar")
-    public ResponseEntity<String> registrarUsuario(@RequestBody UsuarioDTO dto) {
-        String resultado = usuarioServicio.registrarUsuario(dto);
-        if (resultado.equals("Usuario registrado correctamente")) {
-            return ResponseEntity.ok(resultado);
-        } else {
-            return ResponseEntity.badRequest().body(resultado);
-        }
+    public ResponseEntity<UsuarioDTO> registrarUsuario(@RequestBody UsuarioDTO dto) {
+        UsuarioDTO resultado = usuarioServicio.registrarUsuario(dto);
+        return ResponseEntity.ok(resultado);
     }
 }

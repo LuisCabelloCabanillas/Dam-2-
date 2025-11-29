@@ -96,6 +96,12 @@ FROM Usuario;
 SELECT * 
 FROM eventos;
 
+SELECT * 
+FROM usuario;
+
+SELECT * 
+FROM eventos;
+
 INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
 VALUES
 ('Olimpiadas Escolares', 'Cancha Principal', 'Estar inscrito en el colegio', '2025-05-10', 'Competencias deportivas', 'Deportivo');

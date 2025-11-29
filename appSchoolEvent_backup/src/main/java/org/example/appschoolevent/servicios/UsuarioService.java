@@ -2,6 +2,7 @@ package org.example.appschoolevent.servicios;
 
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.UsuarioDTO;
+import org.example.appschoolevent.mappers.UsuarioMapper;
 import org.example.appschoolevent.modelo.Usuario;
 import org.example.appschoolevent.repositorio.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -11,26 +12,13 @@ import org.springframework.stereotype.Service;
 public class UsuarioService {
 
     private UsuarioRepository usuarioRepository;
+    private UsuarioMapper usuarioMapper;
 
-    public String registrarUsuario(UsuarioDTO dto) {
-        if (usuarioRepository.existsByCorreo(dto.getCorreo())) {
-            return "Correo ya registrado";
-        }
+    public UsuarioDTO registrarUsuario(UsuarioDTO dto) {
 
-        Usuario usuario = new Usuario();
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setCorreo(dto.getCorreo());
-        usuario.setFecha_de_nacimiento(dto.getFecha_de_nacimiento());
-        usuario.setContrasena(dto.getContrasena());
+        Usuario usuario = usuarioMapper.toEntity(dto);
+        Usuario guardado= usuarioRepository.save(usuario);
 
-        try {
-            usuario.setTipo(Usuario.TipoUsuario.valueOf(dto.getTipo()));
-        } catch (IllegalArgumentException e) {
-            return "Tipo de usuario inválido";
-        }
-
-        usuarioRepository.save(usuario);
-        return "Usuario registrado correctamente";
+        return usuarioMapper.toDTO(guardado);
     }
 }

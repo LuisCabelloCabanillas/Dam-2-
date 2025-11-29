@@ -9,9 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventoRepository extends JpaRepository<Evento, Integer> {
+
+    Optional<Evento> findById(Integer id);
+
 
     @Query(value = "select e from Evento e " +
             "where (:fecha is null or e.fecha = :fecha) " +

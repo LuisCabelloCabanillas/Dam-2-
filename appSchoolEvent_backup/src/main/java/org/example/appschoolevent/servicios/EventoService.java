@@ -3,6 +3,7 @@ package org.example.appschoolevent.servicios;
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
+import org.example.appschoolevent.mappers.EventoMapper;
 import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.repositorio.EventoRepository;
 import org.springframework.stereotype.Service;
@@ -15,24 +16,24 @@ import java.util.List;
 public class EventoService {
 
     private EventoRepository eventoRepository;
+    private EventoMapper eventoMapper;
 
-    public String crearEvento(EventoDTO dto) {
-        Evento evento = new Evento();
-        evento.setNombre(dto.getNombre());
-        evento.setFecha(dto.getFecha());
-        evento.setLugar(dto.getLugar());
-        evento.setConsiste(dto.getConsiste());
-        evento.setRequisitos(dto.getRequisitos());
+    public EventoDTO crearEvento(EventoDTO dto) {
+        Evento evento = eventoMapper.toEntity(dto);
+        Evento guardado = eventoRepository.save(evento);
 
-        evento.setCategoria(TipoCategoria.valueOf(dto.getCategoria()));
-
-        eventoRepository.save(evento);
-
-        return "Evento creado exitosamente";
+        return eventoMapper.toDTO(guardado);
     }
 
-    public List<Evento> filtarEventos(LocalDate fecha, TipoCategoria categoria) {
-        return eventoRepository.filtrarEventos(fecha, categoria);
+    public List<EventoDTO> filtarEventos(LocalDate fecha, TipoCategoria categoria) {
+        return eventoRepository.filtrarEventos(fecha, categoria)
+                .stream().map(eventoMapper::toDTO).toList();
+    }
+
+    public EventoDTO obtenerEventoPorId(Integer id) {
+        Evento evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+        return eventoMapper.toDTO(evento);
     }
 
 }

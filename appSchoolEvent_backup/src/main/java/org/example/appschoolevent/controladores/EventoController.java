@@ -3,7 +3,6 @@ package org.example.appschoolevent.controladores;
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
-import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.servicios.EventoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +18,22 @@ public class EventoController {
     private EventoService eventoService;
 
     @PostMapping("/crear")
-    public ResponseEntity<String> crearEvento(@RequestBody EventoDTO dto) {
-        String resultado = eventoService.crearEvento(dto);
+    public ResponseEntity<EventoDTO> crearEvento(@RequestBody EventoDTO dto) {
+        EventoDTO resultado = eventoService.crearEvento(dto);
         return ResponseEntity.ok(resultado);
     }
 
     @GetMapping("/filtrar")
-    public ResponseEntity<List<Evento>> filtrarEventos(
+    public ResponseEntity<List<EventoDTO>> filtrarEventos(
             @RequestParam(required = false) LocalDate fecha,
             @RequestParam(required = false) TipoCategoria categoria) {
-        List<Evento> eventos = eventoService.filtarEventos(fecha, categoria);
+        List<EventoDTO> eventos = eventoService.filtarEventos(fecha, categoria);
         return ResponseEntity.ok(eventos);
+    }
+
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<EventoDTO> obtenerEventoPorId(@PathVariable Integer id) {
+        EventoDTO evento = eventoService.obtenerEventoPorId(id);
+        return ResponseEntity.ok(evento);
     }
 }
