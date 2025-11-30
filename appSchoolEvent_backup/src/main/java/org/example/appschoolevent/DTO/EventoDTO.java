@@ -2,6 +2,8 @@ package org.example.appschoolevent.DTO;
 
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.example.appschoolevent.enums.TipoCategoria;
+import org.example.appschoolevent.modelo.Evento;
 
 import java.time.LocalDate;
 
@@ -13,4 +15,5 @@ public class EventoDTO {
     private LocalDate fecha;
     private String consiste;
     private String categoria;
+
 }

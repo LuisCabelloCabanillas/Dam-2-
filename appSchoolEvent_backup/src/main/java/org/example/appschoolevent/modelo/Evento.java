@@ -37,4 +37,12 @@ public class Evento {
     @Column(name = "categoria")
     private TipoCategoria categoria;
 
+    @ManyToMany
+    @JoinTable(
+            name = "inscripciones",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private java.util.Set<Usuario> participantes;
+
 }

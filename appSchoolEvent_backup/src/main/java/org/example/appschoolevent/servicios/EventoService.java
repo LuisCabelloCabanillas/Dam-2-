@@ -30,10 +30,28 @@ public class EventoService {
                 .stream().map(eventoMapper::toDTO).toList();
     }
 
-    public EventoDTO obtenerEventoPorId(Integer id) {
-        Evento evento = eventoRepository.findById(id)
+    public Evento obtenerEventoPorIdEntidad(Integer id) {
+        return eventoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+    }
+
+    public EventoDTO obtenerEventoPorId(Integer id) {
+        Evento evento = obtenerEventoPorIdEntidad(id);
         return eventoMapper.toDTO(evento);
     }
 
+    public EventoDTO actualizarEvento(Integer id, EventoDTO dto) {
+        Evento eventoExistente = eventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+
+        eventoExistente.setNombre(dto.getNombre());
+        eventoExistente.setLugar(dto.getLugar());
+        eventoExistente.setFecha(dto.getFecha());
+        eventoExistente.setCategoria(TipoCategoria.valueOf(dto.getCategoria()));
+        eventoExistente.setRequisitos(dto.getRequisitos());
+        eventoExistente.setConsiste(dto.getConsiste());
+
+        Evento actualizado = eventoRepository.save(eventoExistente);
+        return eventoMapper.toDTO(actualizado);
+    }
 }

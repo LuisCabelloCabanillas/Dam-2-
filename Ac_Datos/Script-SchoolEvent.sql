@@ -16,7 +16,7 @@ nombre varchar(60),
 lugar varchar(60),
 requisitos varchar(150),
 fecha date,
-consiste varchar(50)
+consiste varchar(200)
 );
 
 create or replace table Recor_Noti(
@@ -90,6 +90,10 @@ ADD COLUMN tipo ENUM('Admin', 'User');
 ALTER TABLE eventos 
 ADD COLUMN categoria ENUM('Deportivo', 'Ciencia', 'Cultural', 'otros');
 
+ALTER TABLE Fotos
+MODIFY foto VARCHAR(255);
+
+
 SELECT * 
 FROM Usuario;
 
@@ -97,10 +101,10 @@ SELECT *
 FROM eventos;
 
 SELECT * 
-FROM usuario;
+FROM inscripcion;
 
 SELECT * 
-FROM eventos;
+FROM fotos;
 
 INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
 VALUES
@@ -121,6 +125,8 @@ VALUES
 show tables;
 
 describe eventos;
+
+describe fotos;
 
 select *
 from eventos e
