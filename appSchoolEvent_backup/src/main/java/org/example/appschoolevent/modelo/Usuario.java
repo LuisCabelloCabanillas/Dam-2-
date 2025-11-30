@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.appschoolevent.DTO.UsuarioDTO;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "Usuario")
@@ -41,4 +42,7 @@ public class Usuario {
     public enum TipoUsuario {
         Admin, User
     }
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Inscripcion> inscripciones;
 }

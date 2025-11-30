@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.appschoolevent.enums.TipoCategoria;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "eventos")
@@ -37,12 +38,7 @@ public class Evento {
     @Column(name = "categoria")
     private TipoCategoria categoria;
 
-    @ManyToMany
-    @JoinTable(
-            name = "inscripciones",
-            joinColumns = @JoinColumn(name = "evento_id"),
-            inverseJoinColumns = @JoinColumn(name = "usuario_id")
-    )
-    private java.util.Set<Usuario> participantes;
+    @OneToMany(mappedBy = "evento")
+    private Set<Inscripcion> inscripciones;
 
 }

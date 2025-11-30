@@ -18,4 +18,9 @@ public class UsuarioController {
         UsuarioDTO resultado = usuarioServicio.registrarUsuario(dto);
         return ResponseEntity.ok(resultado);
     }
+
+    @GetMapping("/{id}/eventos")
+    public ResponseEntity<?> obtenerEventosDeUsuario(@PathVariable Integer id) {
+        return ResponseEntity.ok(usuarioServicio.obtenerEventosDeUsuario(id));
+    }
 }
