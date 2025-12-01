@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.appschoolevent.enums.TipoCategoria;
 
+
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
-public class EstadisticaDTO {
 
+public class EstadisticaDTO {
     private Integer idEvento;
     private String nombre;
     private String lugar;
@@ -19,4 +20,5 @@ public class EstadisticaDTO {
     private String consiste;
     private TipoCategoria categoria;
     private Long total_asistente;
+
 }
