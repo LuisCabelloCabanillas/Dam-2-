@@ -106,6 +106,9 @@ FROM inscripcion;
 SELECT * 
 FROM fotos;
 
+SELECT * 
+FROM comentarios;
+
 INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
 VALUES
 ('Olimpiadas Escolares', 'Cancha Principal', 'Estar inscrito en el colegio', '2025-05-10', 'Competencias deportivas', 'Deportivo');
@@ -122,6 +125,47 @@ INSERT INTO Eventos (nombre, lugar, requisitos, fecha, consiste, categoria)
 VALUES
 ('Jornada de Limpieza', 'Patio y áreas comunes', 'Participación voluntaria', '2025-03-12', 'Actividad de limpieza general', 'otros');
 
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',1);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',1);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',1);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',2);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',4);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',1);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',2);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',4);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',3);
+
+INSERT INTO comentarios (opinion, id_usuario)
+VALUES
+('Evento muy dinámico y fácil de entender',6);
+
 show tables;
 
 describe eventos;
@@ -132,3 +176,21 @@ select *
 from eventos e
 where e.fecha = '2025-05-10'
 and e.categoria = 'Deportivo';
+
+select e.id as id_evento, e.nombre, e.lugar, e.requisitos, e.fecha, e.consiste, e.categoria, COUNT(i.id) as total_asistente
+from eventos e
+left join inscripcion i on i.id_evento = e.id
+group by e.id, e.nombre, e.lugar, e.requisitos, e.fecha, e.consiste, e.categoria
+order by total_asistente desc
+limit 5;
+
+select u.id, u.nombre, COUNT(distinct c.id) as suma_de_comentarios, COUNT(distinct i.id) as suma_de_inscripciones, (COUNT(distinct c.id) + Count(distinct i.id)) as suma_global
+from usuario u 
+left join comentarios c on c.id_usuario = u.id
+left join inscripcion i on i.id_usuario = u.id
+group by u.id, u.nombre
+order by suma_global desc
+limit 1;
+
+
+
