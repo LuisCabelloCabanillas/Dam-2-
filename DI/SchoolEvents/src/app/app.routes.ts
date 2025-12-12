@@ -58,6 +58,42 @@ export const routes: Routes = [
   {
     path: 'pagina-anadir',
     loadComponent: () => import('./pagina-anadir/pagina-anadir.page').then( m => m.PaginaAnadirPage)
+  },
+  {
+    path: 'pag-editar',
+    loadComponent: () => import('./pag-editar/pag-editar.page').then( m => m.PagEditarPage)
+  },
+  {
+    path: 'not-rec-ad',
+    loadComponent: () => import('./not-rec-ad/not-rec-ad.page').then( m => m.NotRecAdPage)
+  },
+  {
+    path: 'evento1-ad',
+    loadComponent: () => import('./evento1-ad/evento1-ad.page').then( m => m.Evento1AdPage)
+  },
+  {
+    path: 'evento2-ad',
+    loadComponent: () => import('./evento2-ad/evento2-ad.page').then( m => m.Evento2AdPage)
+  },
+  {
+    path: 'lista-eventos-ad',
+    loadComponent: () => import('./lista-eventos-ad/lista-eventos-ad.page').then( m => m.ListaEventosAdPage)
+  },
+  {
+    path: 'opiniones-ad',
+    loadComponent: () => import('./opiniones-ad/opiniones-ad.page').then( m => m.OpinionesAdPage)
+  },
+  {
+    path: 'pago-ad',
+    loadComponent: () => import('./pago-ad/pago-ad.page').then( m => m.PagoAdPage)
+  },
+  {
+    path: 'pago-aceptado-ad',
+    loadComponent: () => import('./pago-aceptado-ad/pago-aceptado-ad.page').then( m => m.PagoAceptadoAdPage)
+  },
+  {
+    path: 'pago-denegado-ad',
+    loadComponent: () => import('./pago-denegado-ad/pago-denegado-ad.page').then( m => m.PagoDenegadoAdPage)
   }
 
 

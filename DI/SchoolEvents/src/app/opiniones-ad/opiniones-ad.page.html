@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="fotos">
+      <ion-button class="boton" routerLink="/pag1-admin">
+        <img src="assets/icon/FotoSchoolEvent.png" alt="SchoolEvents Logo" class="imagenIz"/>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+  <div>
+    <div class="titulo">OPINIONES</div>
+    <ion-card class="comentario">
+      <ion-card-content>
+        <div class="comentario_usuario">
+          <img src="">
+          <span class="texto">Comentario de: "USERID"</span>
+        </div>
+        <p class="texto">
+          Este evento fue muy interesante para divertido e interactivo con los participantes
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="comentario">
+      <ion-card-content>
+        <div class="comentario_usuario">
+          <img src="">
+          <span class="texto">Comentario de: "USERID"</span>
+        </div>
+        <p class="texto">
+          Este evento fue muy interesante para divertido e interactivo con los participantes
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="comentario">
+      <ion-card-content>
+        <div class="comentario_usuario">
+          <img src="">
+          <span class="texto">Comentario de: "USERID"</span>
+        </div>
+        <p class="texto">
+          Este evento fue muy interesante para divertido e interactivo con los participantes
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="danger" class="btn-opinion" (click)="toggleBubble()">
+    ESCRIBE TÚ UNA OPINIÓN
+  </ion-button>
+</ion-footer>
+
+<div class="burbuja" [class.visible]="bubbleVisible">
+  <div class="burbuja-contenido">
+    <label class="label">Nombre:</label>
+    <input type="text" class="input" [(ngModel)]="nombre">
+
+    <label class="label">Comentario:</label>
+    <textarea class="input textarea" [(ngModel)]="comentario"></textarea>
+
+    <ion-button expand="block" color="danger" (click)="enviarOpinion()">
+      Enviar
+    </ion-button>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="fotos">
+      <ion-button class="boton" routerLink="/lista-eventos-ad">
+        <img src="assets/icon/FotoSchoolEvent.png" alt="SchoolEvents Logo" class="imagenIz"/>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="contenedor">
+
+    <img src="assets/icon/FotoCultural.png" class="evento-img" />
+
+    <h2 class="titulo-evento">Festival<br>Deportivo</h2>
+
+    <div class="bloque">
+      <h3 class="etiqueta">Horario del evento:</h3>
+      <p class="texto">6 de Marzo, 12:00/20:00</p>
+    </div>
+
+    <div class="bloque">
+      <h3 class="etiqueta">Lugar del evento:</h3>
+      <p class="texto">I.E.S Castillblanco, Aula 2ºA</p>
+    </div>
+
+    <div class="bloque">
+      <h3 class="etiqueta">Descripción del evento:</h3>
+      <p class="texto">Actuaciones, literatura y cultura</p>
+    </div>
+
+    <div class="bloque">
+      <h3 class="etiqueta">Requisitos del evento:</h3>
+      <p class="texto">
+        – Ser alumno/profesor del recinto<br>
+        – Tener aprobada todas las materias<br>
+      </p>
+    </div>
+
+    <ion-button expand="block" class="btn-inscripción" routerLink="/lista-eventos-ad">
+      Inscribirse
+    </ion-button>
+    <ion-button expand="block" class="btn-pago" routerLink="/pag-editar">
+      EDITAR EVENTO
+    </ion-button>
+    <ion-button expand="block" class="btn-pago" routerLink="/lista-eventos-ad">
+      BORRAR EVENTO
+    </ion-button>
+
+  </div>
+
+</ion-content>
