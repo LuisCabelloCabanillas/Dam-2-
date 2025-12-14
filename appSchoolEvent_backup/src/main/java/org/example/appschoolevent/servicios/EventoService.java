@@ -19,6 +19,15 @@ public class EventoService {
     private EventoRepository eventoRepository;
     private EventoMapper eventoMapper;
 
+    public List<EventoDTO> obtenerTodosEventos() {
+        List<EventoDTO> eventos = eventoRepository.findAll().stream().map(eventoMapper::toDTO).toList();
+
+        if (eventos.isEmpty()) {
+            throw new ElementosNoEncontrados("No se encontraron eventos");
+        }
+        return eventos;
+    }
+
     public EventoDTO crearEvento(EventoDTO dto) {
         Evento evento = eventoMapper.toEntity(dto);
         Evento guardado = eventoRepository.save(evento);
@@ -64,5 +73,12 @@ public class EventoService {
 
         Evento actualizado = eventoRepository.save(eventoExistente);
         return eventoMapper.toDTO(actualizado);
+    }
+
+    public void eliminarEvento(Integer id) {
+        Evento eventoExistente = eventoRepository.findById(id)
+                .orElseThrow(() -> new ElementosNoEncontrados(
+                        "No se puede eliminar. Evento no encontrado con ID: " + id));
+        eventoRepository.delete(eventoExistente);
     }
 }

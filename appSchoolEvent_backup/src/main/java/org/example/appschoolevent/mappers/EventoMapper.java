@@ -2,7 +2,6 @@ package org.example.appschoolevent.mappers;
 
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.modelo.Evento;
-import org.example.appschoolevent.enums.TipoCategoria;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

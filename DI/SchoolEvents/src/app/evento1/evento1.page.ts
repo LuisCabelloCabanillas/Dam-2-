@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonButton, IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/angular/standalone';
-import {RouterLink} from "@angular/router";
+import {IonButton, IonContent, IonHeader, IonToolbar} from '@ionic/angular/standalone';
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {Evento} from "../models/evento";
+import {ListaEventosService} from "../services/lista-evento.service";
 
 @Component({
   selector: 'app-evento1',
@@ -13,9 +15,18 @@ import {RouterLink} from "@angular/router";
 })
 export class Evento1Page implements OnInit {
 
-  constructor() { }
+  evento?: Evento;
+
+  constructor(
+    private route: ActivatedRoute,
+    private eventoService: ListaEventosService
+  ) { }
 
   ngOnInit() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) {
+      this.eventoService.detalleEvento(id).subscribe(evento => this.evento = evento);
+    }
   }
 
 }

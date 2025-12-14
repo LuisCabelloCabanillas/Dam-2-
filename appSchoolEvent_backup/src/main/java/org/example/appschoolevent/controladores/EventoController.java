@@ -18,6 +18,12 @@ public class EventoController {
 
     private EventoService eventoService;
 
+    @GetMapping("/todos")
+    public ResponseEntity<List<EventoDTO>> obtenerTodosEventos() {
+        List<EventoDTO> eventos = eventoService.obtenerTodosEventos();
+        return ResponseEntity.ok(eventos);
+    }
+
     @PostMapping("/crear")
     public ResponseEntity<EventoDTO> crearEvento(@Valid @RequestBody EventoDTO dto) {
         EventoDTO resultado = eventoService.crearEvento(dto);
@@ -43,4 +49,11 @@ public class EventoController {
         EventoDTO eventoActualizado = eventoService.actualizarEvento(id, dto);
         return ResponseEntity.ok(eventoActualizado);
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarEvento(@PathVariable Integer id) {
+        eventoService.eliminarEvento(id);
+        return ResponseEntity.ok("Evento eliminado correctamente");
+    }
+
 }
