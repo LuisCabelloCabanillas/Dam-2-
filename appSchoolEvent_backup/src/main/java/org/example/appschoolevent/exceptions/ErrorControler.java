@@ -14,12 +14,44 @@ import java.util.Map;
 public class ErrorControler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> controlarErrores(MethodArgumentNotValidException exception) {
+    public ResponseEntity<Map<String, String>> controlarErrores(
+            MethodArgumentNotValidException exception) {
 
         Map<String, String> errors = new HashMap<>();
         for  (FieldError error : exception.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(ElementosNoEncontrados.class)
+    public ResponseEntity<Map<String, String>> manejarElementosNoEncontrados(
+            MethodArgumentNotValidException exception) {
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EliminarNoExistente.class)
+    public ResponseEntity<Map<String, String>> manejarEliminarNoExistente(
+            MethodArgumentNotValidException exception) {
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> manejarIllegalArgument(
+            IllegalArgumentException exception) {
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 

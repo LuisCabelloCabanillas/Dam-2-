@@ -18,12 +18,8 @@ public class FotosController {
             @PathVariable Integer id,
             @RequestParam String url) {
         {
-            try{
-                FotosDTO dto = fotosService.guardarFoto(id, url);
-                return ResponseEntity.ok(dto);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
+            FotosDTO fotoGuardada = fotosService.guardarFoto(id, url);
+            return ResponseEntity.ok(fotoGuardada);
         }
     }
 

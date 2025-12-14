@@ -19,12 +19,11 @@ public class InscripcionController {
     public ResponseEntity<?> crearInscripcion(
             @PathVariable Integer id,
             @RequestParam Integer idUsuario) {
-        try {
-            InscripcionDTO dto = inscripcionService.inscribirUsuario(idUsuario, id);
-            return ResponseEntity.ok(dto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+
+        InscripcionDTO inscripcionDTO = inscripcionService
+                .inscribirUsuario(idUsuario, id);
+
+        return ResponseEntity.ok(inscripcionDTO);
     }
 
 }

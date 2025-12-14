@@ -2,6 +2,7 @@ package org.example.appschoolevent.servicios;
 
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.UsuarioActividadDTO;
+import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.repositorio.UsuarioRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,10 @@ public class UsuarioActividadService {
         PageRequest top = PageRequest.of(0, 1);
         var resultado = usuarioRepository.obtenerUsuarioMasActivo(top);
 
-        return resultado.isEmpty() ? null : resultado.get(0);
+        if (resultado.isEmpty()) {
+            throw new ElementosNoEncontrados("No se encontraron usuarios con actividad");
+        }
+        return resultado.get(0);
     }
 
 }

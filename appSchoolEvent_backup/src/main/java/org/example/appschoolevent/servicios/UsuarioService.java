@@ -3,6 +3,8 @@ package org.example.appschoolevent.servicios;
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.DTO.UsuarioDTO;
+import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
+import org.example.appschoolevent.exceptions.OperacionNoPermitida;
 import org.example.appschoolevent.mappers.EventoMapper;
 import org.example.appschoolevent.mappers.UsuarioMapper;
 import org.example.appschoolevent.modelo.Inscripcion;
@@ -24,6 +26,10 @@ public class UsuarioService {
 
     public UsuarioDTO registrarUsuario(UsuarioDTO dto) {
 
+        if (usuarioRepository.existsByCorreo(dto.getCorreo())) {
+            throw new OperacionNoPermitida("El correo ya está registrado " + dto.getCorreo());
+        }
+
         Usuario usuario = usuarioMapper.toEntity(dto);
         Usuario guardado= usuarioRepository.save(usuario);
 
@@ -31,10 +37,13 @@ public class UsuarioService {
     }
 
     public List<EventoDTO> obtenerEventosDeUsuario(Integer idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new ElementosNoEncontrados(
+                        "Usuario no encontrado"));
         List<Inscripcion> inscripciones = inscripcionRepository.findByUsuarioId(idUsuario);
 
         return inscripciones.stream()
-                .map(inscripcion -> eventoMapper.toDTO(inscripcion.getEvento()))
+                .map(Inscripcion-> eventoMapper.toDTO(Inscripcion.getEvento()))
                 .toList();
     }
 

@@ -1,5 +1,6 @@
 package org.example.appschoolevent.controladores;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
@@ -18,7 +19,7 @@ public class EventoController {
     private EventoService eventoService;
 
     @PostMapping("/crear")
-    public ResponseEntity<EventoDTO> crearEvento(@RequestBody EventoDTO dto) {
+    public ResponseEntity<EventoDTO> crearEvento(@Valid @RequestBody EventoDTO dto) {
         EventoDTO resultado = eventoService.crearEvento(dto);
         return ResponseEntity.ok(resultado);
     }
@@ -38,7 +39,7 @@ public class EventoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<EventoDTO> actualizarEvento(@PathVariable Integer id, @RequestBody EventoDTO dto) {
+    public ResponseEntity<EventoDTO> actualizarEvento(@PathVariable Integer id,@Valid @RequestBody EventoDTO dto) {
         EventoDTO eventoActualizado = eventoService.actualizarEvento(id, dto);
         return ResponseEntity.ok(eventoActualizado);
     }

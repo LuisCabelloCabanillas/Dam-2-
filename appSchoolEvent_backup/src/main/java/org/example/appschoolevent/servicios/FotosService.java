@@ -18,14 +18,18 @@ public class FotosService {
 
     public FotosDTO guardarFoto(Integer idEvento, String url){
 
+        if (url == null || url.isBlank()){
+            throw new IllegalArgumentException("La URL de la foto no puede estar vacía");
+        }
+
         Evento evento = eventoService.obtenerEventoPorIdEntidad(idEvento);
 
         Fotos foto = new Fotos();
         foto.setEvento(evento);
         foto.setFoto(url);
 
-        foto = fotosRepository.save(foto);
-        return fotosMapper.toDto(foto);
+        Fotos fotoGuardada = fotosRepository.save(foto);
+        return fotosMapper.toDTO(fotoGuardada);
     }
 
 }

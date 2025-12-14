@@ -17,7 +17,7 @@ public class UsuarioActividadController {
 
     @GetMapping("/usuarioMasActivo")
     public ResponseEntity<UsuarioActividadDTO> obtenerUsuarioMasActivo() {
-        return ResponseEntity.ok(usuarioActividadService.obtenerUsuarioMasActivo());
+        UsuarioActividadDTO usuarioMasActivo = usuarioActividadService.obtenerUsuarioMasActivo();
+        return ResponseEntity.ok(usuarioMasActivo);
     }
-
 }

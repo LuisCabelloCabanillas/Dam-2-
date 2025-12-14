@@ -9,5 +9,5 @@ import org.mapstruct.Mapping;
 public interface FotosMapper {
     @Mapping(target = "idEvento", source = "evento.id")
     @Mapping(target = "url", source = "foto")
-    FotosDTO toDto(Fotos foto);
+    FotosDTO toDTO(Fotos foto);
 }

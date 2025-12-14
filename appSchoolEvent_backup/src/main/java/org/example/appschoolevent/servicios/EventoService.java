@@ -3,6 +3,7 @@ package org.example.appschoolevent.servicios;
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
+import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.mappers.EventoMapper;
 import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.repositorio.EventoRepository;
@@ -26,23 +27,33 @@ public class EventoService {
     }
 
     public List<EventoDTO> filtarEventos(LocalDate fecha, TipoCategoria categoria) {
-        return eventoRepository.filtrarEventos(fecha, categoria)
-                .stream().map(eventoMapper::toDTO).toList();
+        List<EventoDTO> eventos = eventoRepository.filtrarEventos(fecha, categoria).stream().map(eventoMapper::toDTO).toList();
+
+        if (eventos.isEmpty()) {
+            throw new ElementosNoEncontrados(
+                    "No se encontraron eventos con los filtros proporcionados");
+        }
+        return eventos;
     }
 
     public Evento obtenerEventoPorIdEntidad(Integer id) {
         return eventoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+                .orElseThrow(() -> new ElementosNoEncontrados(
+                        "Evento no encontrado con ID: " + id));
     }
 
     public EventoDTO obtenerEventoPorId(Integer id) {
-        Evento evento = obtenerEventoPorIdEntidad(id);
+        Evento evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new ElementosNoEncontrados(
+                        "Evento no encontrado con ID: " + id));
+
         return eventoMapper.toDTO(evento);
     }
 
     public EventoDTO actualizarEvento(Integer id, EventoDTO dto) {
         Evento eventoExistente = eventoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Evento no encontrado con ID: " + id));
+                .orElseThrow(() -> new ElementosNoEncontrados(
+                        "No se puede actualizar. Evento no encontrado con ID: " + id));
 
         eventoExistente.setNombre(dto.getNombre());
         eventoExistente.setLugar(dto.getLugar());

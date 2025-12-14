@@ -3,6 +3,8 @@ package org.example.appschoolevent.servicios;
 
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.InscripcionDTO;
+import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
+import org.example.appschoolevent.exceptions.OperacionNoPermitida;
 import org.example.appschoolevent.mappers.InscripcionMapper;
 import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.modelo.Inscripcion;
@@ -24,23 +26,23 @@ public class InscripcionService {
     public InscripcionDTO inscribirUsuario(Integer idUsuario, Integer idEvento) {
 
         Evento evento = eventoRepository.findById(idEvento)
-                .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+                .orElseThrow(() -> new ElementosNoEncontrados("Evento no encontrado"));
 
         Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ElementosNoEncontrados("Usuario no encontrado"));
 
         boolean yaInscrito = inscripcionRepository.existsByUsuarioIdAndEventoId(idUsuario, idEvento);
         if (yaInscrito) {
-            throw new IllegalArgumentException("El usuario ya está inscrito en este evento");
+            throw new OperacionNoPermitida("El usuario ya está inscrito en este evento");
         }
 
         Inscripcion inscripcion = new Inscripcion();
         inscripcion.setEvento(evento);
         inscripcion.setUsuario(usuario);
 
-        inscripcion = inscripcionRepository.save(inscripcion);
+        Inscripcion inscripcionGuardada = inscripcionRepository.save(inscripcion);
 
-        return inscripcionMapper.toDTO(inscripcion);
+        return inscripcionMapper.toDTO(inscripcionGuardada);
 
     }
 }
