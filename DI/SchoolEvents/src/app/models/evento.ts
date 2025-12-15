@@ -1,12 +1,11 @@
 import {TipoCategoria} from "../enums/TipoCategoria";
 
 export interface Evento {
-  id?: number;
   nombre: string;
   lugar: string;
+  requisitos?: string;
   fecha: string;
   consiste:string;
-  requisitos?: string;
   categoria: TipoCategoria;
-
+  id?: number;
 }

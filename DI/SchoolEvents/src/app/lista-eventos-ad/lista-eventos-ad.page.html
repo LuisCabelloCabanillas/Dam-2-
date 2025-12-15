@@ -16,7 +16,10 @@
 
   <ion-list class="lista-eventos">
 
-    <ion-button *ngFor="let evento of eventos" lines="none" class="boton-evento" [routerLink]="['/evento1-ad',evento.id]">
+    <ion-button *ngFor="let evento of eventos"
+                lines="none"
+                class="boton-evento"
+                [routerLink]= "['/evento1-ad', evento.id]">
       <img src="assets/icon/FotoCultural.png" class="evento-img" />
       <span class="evento-texto">
         {{ evento.fecha }}: {{evento.nombre}}

@@ -35,7 +35,10 @@ export class ListaEventosAdPage implements OnInit {
 
   cargarEventos() {
     this.eventoService.obtenerEventos().subscribe({
-      next: (evento) => this.eventos = evento,
+      next: (data) =>{
+        console.log('Eventos recibidos:', data);
+        this.eventos = data
+      },
       error: async (error) => {
         const toast = await this.toastCtrl.create({
           message: error.message,
@@ -45,6 +48,12 @@ export class ListaEventosAdPage implements OnInit {
         toast.present();
       }
     });
+  }
+
+  irADetalle(id?: number) {
+    if (id != null){
+      this.router.navigate(['/evento1-ad/'+id]);
+    }
   }
 
 

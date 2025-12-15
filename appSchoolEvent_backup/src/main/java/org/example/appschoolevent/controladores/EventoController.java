@@ -55,5 +55,4 @@ public class EventoController {
         eventoService.eliminarEvento(id);
         return ResponseEntity.ok("Evento eliminado correctamente");
     }
-
 }

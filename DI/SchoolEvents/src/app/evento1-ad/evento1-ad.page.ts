@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonButton, IonContent, IonHeader, IonToolbar} from '@ionic/angular/standalone';
+import {IonButton, IonContent, IonHeader, IonSpinner, IonToolbar} from '@ionic/angular/standalone';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ListaEventosService} from "../services/lista-evento.service";
 import {AlertController, ToastController} from "@ionic/angular";
 import {Evento} from "../models/evento";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-evento1-ad',
   templateUrl: './evento1-ad.page.html',
   styleUrls: ['./evento1-ad.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, RouterLink, IonSpinner]
 })
 export class Evento1AdPage implements OnInit {
 
-  evento!: Evento;
+  evento?: Evento;
   id!: number;
 
   constructor(
@@ -47,6 +48,7 @@ export class Evento1AdPage implements OnInit {
   cargarEvento() {
     this.eventoService.detalleEvento(this.id).subscribe({
       next: (data) => {
+        console.log('Evento cargado:', data);
         this.evento = data;
       },
       error: async (err) => {
@@ -91,5 +93,9 @@ export class Evento1AdPage implements OnInit {
   async mostrarToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000, color });
     toast.present();
+  }
+
+  getFechaFormateada(fecha: string):string {
+    return new Date(fecha).toLocaleDateString();
   }
 }

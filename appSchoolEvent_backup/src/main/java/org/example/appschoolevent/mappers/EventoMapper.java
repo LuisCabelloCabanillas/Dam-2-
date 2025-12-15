@@ -12,7 +12,16 @@ public interface EventoMapper {
     @Mapping(target = "categoria", expression = "java(org.example.appschoolevent.enums.TipoCategoria.valueOf(dto.getCategoria()))")
     Evento toEntity(EventoDTO dto);
 
-    @Mapping(target = "categoria", expression = "java(entity.getCategoria().name())")
-    EventoDTO toDTO(Evento entity);
+    default EventoDTO toDTO(Evento evento){
+        EventoDTO dto = new EventoDTO();
+        dto.setId(evento.getId());
+        dto.setNombre(evento.getNombre());
+        dto.setLugar(evento.getLugar());
+        dto.setRequisitos(evento.getRequisitos());
+        dto.setFecha(evento.getFecha().toString());
+        dto.setConsiste(evento.getConsiste());
+        dto.setCategoria(evento.getCategoria().name());
+        return dto;
+    }
 
 }

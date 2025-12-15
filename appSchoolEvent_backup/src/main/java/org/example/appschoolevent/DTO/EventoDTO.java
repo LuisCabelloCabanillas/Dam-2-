@@ -2,16 +2,16 @@ package org.example.appschoolevent.DTO;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventoDTO {
+
+    private Integer id;
 
     @NotBlank(message = "Debes escribir un nombre")
     private String nombre;
@@ -20,7 +20,7 @@ public class EventoDTO {
 
     private String requisitos;
     @NotNull(message = "Debes escribir una fecha")
-    private LocalDate fecha;
+    private String fecha;
     @NotBlank(message = "Debes escribir en que consiste")
     private String consiste;
     @NotBlank(message = "Debes escribir una categoria (Deportivo, Ciencia, Cultural u otros)")

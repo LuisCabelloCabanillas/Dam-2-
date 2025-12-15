@@ -23,7 +23,9 @@ public class EventoService {
     private InscripcionRepository inscripcionRepository;
 
     public List<EventoDTO> obtenerTodosEventos() {
-        List<EventoDTO> eventos = eventoRepository.findAll().stream().map(eventoMapper::toDTO).toList();
+        List<EventoDTO> eventos = eventoRepository.findAll().stream()
+                .map(eventoMapper::toDTO)
+                .toList();
 
         if (eventos.isEmpty()) {
             throw new ElementosNoEncontrados("No se encontraron eventos");
@@ -39,7 +41,9 @@ public class EventoService {
     }
 
     public List<EventoDTO> filtarEventos(LocalDate fecha, TipoCategoria categoria) {
-        List<EventoDTO> eventos = eventoRepository.filtrarEventos(fecha, categoria).stream().map(eventoMapper::toDTO).toList();
+        List<EventoDTO> eventos = eventoRepository.filtrarEventos(fecha, categoria).stream()
+                .map(eventoMapper::toDTO)
+                .toList();
 
         if (eventos.isEmpty()) {
             throw new ElementosNoEncontrados(
@@ -69,7 +73,7 @@ public class EventoService {
 
         eventoExistente.setNombre(dto.getNombre());
         eventoExistente.setLugar(dto.getLugar());
-        eventoExistente.setFecha(dto.getFecha());
+        eventoExistente.setFecha(LocalDate.parse(dto.getFecha()));
         eventoExistente.setCategoria(TipoCategoria.valueOf(dto.getCategoria()));
         eventoExistente.setRequisitos(dto.getRequisitos());
         eventoExistente.setConsiste(dto.getConsiste());
