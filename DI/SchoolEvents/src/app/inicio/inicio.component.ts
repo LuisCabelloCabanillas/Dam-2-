@@ -12,12 +12,7 @@ import {RouterLink} from "@angular/router";
   standalone: true,
   imports: [
     IonicModule,
-    CalendarioComponent,
-    EventosInstitutoComponent,
-    RouterLink,
-    IonButton,
-    IonToolbar,
-    IonHeader,
+    CalendarioComponent
   ]
 })
 export class InicioComponent  implements OnInit {

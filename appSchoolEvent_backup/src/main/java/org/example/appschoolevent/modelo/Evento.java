@@ -38,7 +38,7 @@ public class Evento {
     @Column(name = "categoria")
     private TipoCategoria categoria;
 
-    @OneToMany(mappedBy = "evento")
+    @OneToMany(mappedBy = "evento", cascade = CascadeType.REMOVE)
     private Set<Inscripcion> inscripciones;
 
 }

@@ -11,4 +11,6 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Intege
 
     boolean existsByUsuarioIdAndEventoId(Integer idUsuario, Integer idEvento);
     List<Inscripcion> findByUsuarioId(Integer idUsuario);
+    void deleteByEventoId(Integer idEvento);
+
 }

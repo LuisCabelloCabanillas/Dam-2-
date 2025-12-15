@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './anadir-evento.page.html',
   styleUrls: ['./anadir-evento.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonDatetime, IonButton, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonDatetime, IonButton, RouterLink]
 })
 export class AnadirEventoPage implements OnInit {
 

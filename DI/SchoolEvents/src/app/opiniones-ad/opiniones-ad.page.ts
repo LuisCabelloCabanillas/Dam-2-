@@ -17,7 +17,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './opiniones-ad.page.html',
   styleUrls: ['./opiniones-ad.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonFooter, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonFooter, RouterLink]
 })
 export class OpinionesAdPage implements OnInit {
 

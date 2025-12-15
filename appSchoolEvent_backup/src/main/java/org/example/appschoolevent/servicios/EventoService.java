@@ -1,5 +1,6 @@
 package org.example.appschoolevent.servicios;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
@@ -7,6 +8,7 @@ import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.mappers.EventoMapper;
 import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.repositorio.EventoRepository;
+import org.example.appschoolevent.repositorio.InscripcionRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ public class EventoService {
 
     private EventoRepository eventoRepository;
     private EventoMapper eventoMapper;
+    private InscripcionRepository inscripcionRepository;
 
     public List<EventoDTO> obtenerTodosEventos() {
         List<EventoDTO> eventos = eventoRepository.findAll().stream().map(eventoMapper::toDTO).toList();
@@ -75,10 +78,14 @@ public class EventoService {
         return eventoMapper.toDTO(actualizado);
     }
 
+    @Transactional
     public void eliminarEvento(Integer id) {
         Evento eventoExistente = eventoRepository.findById(id)
                 .orElseThrow(() -> new ElementosNoEncontrados(
                         "No se puede eliminar. Evento no encontrado con ID: " + id));
+
+        inscripcionRepository.deleteByEventoId(id);
+
         eventoRepository.delete(eventoExistente);
     }
 }

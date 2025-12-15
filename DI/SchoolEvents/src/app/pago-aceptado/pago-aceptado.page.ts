@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './pago-aceptado.page.html',
   styleUrls: ['./pago-aceptado.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, IonButton, RouterLink]
 })
 export class PagoAceptadoPage implements OnInit {
 

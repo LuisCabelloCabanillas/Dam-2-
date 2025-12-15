@@ -19,9 +19,13 @@ export class ListaEventosAdPage implements OnInit {
   eventos: Evento[] = [];
 
   constructor(
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private eventoService: ListaEventosService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private router: Router,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private toastCtrl: ToastController,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private alertCtrl: AlertController
   ) { }
 
@@ -43,11 +47,6 @@ export class ListaEventosAdPage implements OnInit {
     });
   }
 
-  verDetalle(id?: number) {
-    if (id != null) {
-      this.router.navigate(['/evento1', id]);
-    }
-  }
 
   editarEvento(id?: number) {
     if (id != null) {
@@ -55,34 +54,4 @@ export class ListaEventosAdPage implements OnInit {
     }
   }
 
-  async eliminarEvento(id?: number) {
-    if (id == null) return;
-
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmar eliminación',
-      message: '¿Esta seguro de eliminar el evento?',
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        { text: 'eliminar',
-          handler: () => {
-          this.eventoService.eliminarEvento(id).subscribe({
-            next: () => {
-              this.eventos = this.eventos.filter(evento => evento.id !== id);
-              },
-            error: async () => {
-              const toast = await this.toastCtrl.create({
-                message: 'Error al eliminar el evento',
-                duration: 2000,
-                color: 'danger'
-              });
-              toast.present();
-            }
-          });
-        }
-        }
-        ]
-      });
-
-      await alert.present();
-      }
 }

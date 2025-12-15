@@ -8,6 +8,7 @@ export class ListaEventosService {
 
   private API = "/api/eventos";
 
+  // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) {}
 
   obtenerEventos(): Observable<Evento[]> {
@@ -27,6 +28,7 @@ export class ListaEventosService {
   }
 
   eliminarEvento(id: number): Observable<any> {
-    return this.http.delete(this.API + "/eliminar/" + id);
+    return this.http.delete(`${this.API}/eliminar/${id}`);
   }
+
 }

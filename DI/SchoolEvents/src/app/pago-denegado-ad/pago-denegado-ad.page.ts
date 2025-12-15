@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './pago-denegado-ad.page.html',
   styleUrls: ['./pago-denegado-ad.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, IonButton, RouterLink]
 })
 export class PagoDenegadoAdPage implements OnInit {
 

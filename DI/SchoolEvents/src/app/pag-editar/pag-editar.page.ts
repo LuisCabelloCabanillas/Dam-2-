@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './pag-editar.page.html',
   styleUrls: ['./pag-editar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonInput, IonTextarea, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, IonInput, IonTextarea, RouterLink]
 })
 export class PagEditarPage implements OnInit {
 

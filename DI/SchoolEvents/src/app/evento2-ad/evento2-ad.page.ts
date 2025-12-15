@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './evento2-ad.page.html',
   styleUrls: ['./evento2-ad.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, RouterLink]
 })
 export class Evento2AdPage implements OnInit {
 

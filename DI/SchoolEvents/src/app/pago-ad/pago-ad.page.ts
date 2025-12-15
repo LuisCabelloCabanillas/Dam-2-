@@ -17,7 +17,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './pago-ad.page.html',
   styleUrls: ['./pago-ad.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonInput, IonItem, IonLabel, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonInput, IonItem, IonLabel, RouterLink]
 })
 export class PagoAdPage implements OnInit {
 

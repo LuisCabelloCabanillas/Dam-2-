@@ -19,7 +19,7 @@ import {HeaderAdmin1Component} from "../header-admin1/header-admin1.component";
   templateUrl: './pag1-admin.page.html',
   styleUrls: ['./pag1-admin.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, CommonModule, FormsModule, FooterComponent, HeaderUser1Component, IonButton, IonDatetime, IonFooter, RouterLink, FooterComponent, HeaderAdmin1Component]
+  imports: [IonContent, IonHeader, CommonModule, FormsModule, FooterComponent, IonButton, IonDatetime, IonFooter, RouterLink, FooterComponent, HeaderAdmin1Component]
 })
 export class Pag1AdminPage implements OnInit {
 

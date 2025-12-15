@@ -12,10 +12,6 @@ import {CrearIniciarSesionBotsComponent} from "../crear-iniciar-sesion-bots/crea
   imports: [
     IonContent,
     IonDatetime,
-    IonButton,
-    IonRouterLink,
-    RouterLink,
-    HeaderUser1Component,
     IonHeader,
     CrearIniciarSesionBotsComponent,
     IonToolbar,

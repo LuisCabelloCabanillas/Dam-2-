@@ -9,7 +9,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './pagina-anadir.page.html',
   styleUrls: ['./pagina-anadir.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonInput, IonTextarea, IonButton, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonInput, IonTextarea, IonButton, RouterLink]
 })
 export class PaginaAnadirPage implements OnInit {
 

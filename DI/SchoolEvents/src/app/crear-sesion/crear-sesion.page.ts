@@ -19,7 +19,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './crear-sesion.page.html',
   styleUrls: ['./crear-sesion.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardContent, IonItem, IonLabel, IonInput, IonButton, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, IonCard, IonCardContent, IonItem, IonLabel, IonInput, IonButton, RouterLink]
 })
 export class CrearSesionPage implements OnInit {
 

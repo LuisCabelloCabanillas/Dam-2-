@@ -18,7 +18,7 @@ import {RouterLink} from "@angular/router";
   templateUrl: './not-rec-ad.page.html',
   styleUrls: ['./not-rec-ad.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonItem, IonLabel, IonList, RouterLink]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, IonItem, IonLabel, IonList, RouterLink]
 })
 export class NotRecAdPage implements OnInit {
 

@@ -31,7 +31,8 @@ export const routes: Routes = [
   {
     path: 'evento1',
     loadComponent: () => import('./evento1/evento1.page').then( m => m.Evento1Page)
-  },  {
+  },
+  {
     path: 'pago',
     loadComponent: () => import('./pago/pago.page').then( m => m.PagoPage)
   },
@@ -68,7 +69,7 @@ export const routes: Routes = [
     loadComponent: () => import('./not-rec-ad/not-rec-ad.page').then( m => m.NotRecAdPage)
   },
   {
-    path: 'evento1-ad',
+    path: 'evento1-ad/:id',
     loadComponent: () => import('./evento1-ad/evento1-ad.page').then( m => m.Evento1AdPage)
   },
   {
