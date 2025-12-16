@@ -61,7 +61,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pagina-anadir/pagina-anadir.page').then( m => m.PaginaAnadirPage)
   },
   {
-    path: 'pag-editar',
+    path: 'pag-editar/:id',
     loadComponent: () => import('./pag-editar/pag-editar.page').then( m => m.PagEditarPage)
   },
   {

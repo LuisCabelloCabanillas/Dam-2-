@@ -11,24 +11,31 @@
 <ion-content class="contenedor-principal">
   <div class="forma-caja">
     <label class="etiqueta">Día del evento:</label>
-    <ion-input type="date" placeholder="Día del Evento" class="Escritura"></ion-input>
+    <ion-input type="date" placeholder="Día del Evento" class="Escritura" [(ngModel)]="evento.fecha"></ion-input>
 
     <label class="etiqueta">Nombre del evento:</label>
-    <ion-input placeholder="Nombre" class="Escritura"></ion-input>
+    <ion-input placeholder="Nombre" class="Escritura" [(ngModel)]="evento.nombre"></ion-input>
 
     <label class="etiqueta">Lugar/Localización del evento:</label>
-    <ion-input placeholder="Localización" class="Escritura"></ion-input>
+    <ion-input placeholder="Localización" class="Escritura" [(ngModel)]="evento.lugar"></ion-input>
 
     <label class="etiqueta">En qué consiste el evento:</label>
-    <ion-textarea placeholder="Descripción" class="Texto"></ion-textarea>
+    <ion-textarea placeholder="Descripción" class="Texto" [(ngModel)]="evento.consiste"></ion-textarea>
 
     <label class="etiqueta">Requisitos para poder inscribirse en el evento:</label>
-    <ion-textarea placeholder="Requisitos" class="Texto"></ion-textarea>
+    <ion-textarea placeholder="Requisitos" class="Texto" [(ngModel)]="evento.requisitos"></ion-textarea>
 
+    <label class="etiqueta">Tipo de evento:</label>
+    <ion-select placeholder="Selecciona una categoría" class="Texto" [(ngModel)]="evento.categoria">
+      <ion-select-option [value]="TipoCategoria.Deportivo">Deportivo</ion-select-option>
+      <ion-select-option [value]="TipoCategoria.Ciencia">Ciencia</ion-select-option>
+      <ion-select-option [value]="TipoCategoria.Cultural">Cultural</ion-select-option>
+      <ion-select-option [value]="TipoCategoria.otros">Otros</ion-select-option>
+    </ion-select>
   </div>
 
   <div class="caja-btn">
-    <ion-button routerLink="/lista-eventos-ad" expand="block" class="btn-editar">Editar Evento</ion-button>
+    <ion-button expand="block" class="btn-editar" (click)="guardarCambios()">Editar Evento</ion-button>
   </div>
 
 </ion-content>

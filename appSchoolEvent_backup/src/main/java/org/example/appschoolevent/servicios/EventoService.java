@@ -7,7 +7,9 @@ import org.example.appschoolevent.enums.TipoCategoria;
 import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.mappers.EventoMapper;
 import org.example.appschoolevent.modelo.Evento;
+import org.example.appschoolevent.modelo.Inscripcion;
 import org.example.appschoolevent.repositorio.EventoRepository;
+import org.example.appschoolevent.repositorio.FotosRepository;
 import org.example.appschoolevent.repositorio.InscripcionRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class EventoService {
 
     private EventoRepository eventoRepository;
     private EventoMapper eventoMapper;
+    private FotosRepository fotosRepository;
     private InscripcionRepository inscripcionRepository;
 
     public List<EventoDTO> obtenerTodosEventos() {
@@ -88,8 +91,8 @@ public class EventoService {
                 .orElseThrow(() -> new ElementosNoEncontrados(
                         "No se puede eliminar. Evento no encontrado con ID: " + id));
 
+        fotosRepository.borrarFotosPorEvento(id);
         inscripcionRepository.deleteByEventoId(id);
-
         eventoRepository.delete(eventoExistente);
     }
 }

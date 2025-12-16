@@ -6,7 +6,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ListaEventosService} from "../services/lista-evento.service";
 import {AlertController, ToastController} from "@ionic/angular";
 import {Evento} from "../models/evento";
-import {error} from "@angular/compiler-cli/src/transformers/util";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-evento1-ad',
@@ -30,7 +30,9 @@ export class Evento1AdPage implements OnInit {
     // eslint-disable-next-line @angular-eslint/prefer-inject
     private route: ActivatedRoute,
     // eslint-disable-next-line @angular-eslint/prefer-inject
-    private router: Router
+    private router: Router,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -74,11 +76,13 @@ export class Evento1AdPage implements OnInit {
             this.eventoService.eliminarEvento(this.id).subscribe({
               next: async () => {
                 await this.mostrarToast('Evento eliminado', 'success');
-                this.router.navigate(['/lista-eventos-ad']);
+                this.location.back();
               },
               error: async (err) => {
-                console.error('Error al eliminar evento:', err);
-                await this.mostrarToast('Error al eliminar el evento', 'danger');
+                if (err.status === 404) {
+                  await this.mostrarToast('Evento ya eliminado', 'warning');
+                }
+                this.location.back();
               }
             });
           }

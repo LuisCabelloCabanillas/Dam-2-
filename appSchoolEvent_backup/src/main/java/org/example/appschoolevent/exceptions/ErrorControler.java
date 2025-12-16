@@ -26,13 +26,10 @@ public class ErrorControler {
 
 
     @ExceptionHandler(ElementosNoEncontrados.class)
-    public ResponseEntity<Map<String, String>> manejarElementosNoEncontrados(
-            MethodArgumentNotValidException exception) {
-
+    public ResponseEntity<Map<String, String>> manejarElementosNoEncontrados(ElementosNoEncontrados ex) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("error", exception.getMessage());
-
-        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+        errors.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 
     @ExceptionHandler(EliminarNoExistente.class)

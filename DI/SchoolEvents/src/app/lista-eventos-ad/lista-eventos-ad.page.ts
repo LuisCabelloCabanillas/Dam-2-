@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonButton, IonContent, IonHeader, IonList, IonToolbar} from '@ionic/angular/standalone';
 import {Router, RouterLink} from "@angular/router";
 import {Evento} from "../models/evento";
-import {AlertController, ToastController} from "@ionic/angular";
+import {ToastController} from "@ionic/angular";
 import {ListaEventosService} from "../services/lista-evento.service";
+import {ViewWillEnter} from '@ionic/angular';
 
 @Component({
   selector: 'app-lista-eventos-ad',
@@ -14,7 +15,7 @@ import {ListaEventosService} from "../services/lista-evento.service";
   standalone: true,
   imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonButton, IonList, RouterLink]
 })
-export class ListaEventosAdPage implements OnInit {
+export class ListaEventosAdPage implements ViewWillEnter, OnInit {
 
   eventos: Evento[] = [];
 
@@ -26,11 +27,13 @@ export class ListaEventosAdPage implements OnInit {
     // eslint-disable-next-line @angular-eslint/prefer-inject
     private toastCtrl: ToastController,
     // eslint-disable-next-line @angular-eslint/prefer-inject
-    private alertCtrl: AlertController
   ) { }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.cargarEventos();
+  }
+
+  ngOnInit() {
   }
 
   cargarEventos() {
@@ -48,19 +51,6 @@ export class ListaEventosAdPage implements OnInit {
         toast.present();
       }
     });
-  }
-
-  irADetalle(id?: number) {
-    if (id != null){
-      this.router.navigate(['/evento1-ad/'+id]);
-    }
-  }
-
-
-  editarEvento(id?: number) {
-    if (id != null) {
-      this.router.navigate(['/pag-editar', id]);
-    }
   }
 
 }
