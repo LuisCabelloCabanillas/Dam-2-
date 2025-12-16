@@ -54,7 +54,6 @@ export class Evento1AdPage implements OnInit {
         this.evento = data;
       },
       error: async (err) => {
-        console.error('Error al cargar evento:', err);
         await this.mostrarToast('Error al cargar el evento', 'danger');
         this.router.navigate(['/lista-eventos-ad']);
       }
