@@ -7,7 +7,6 @@ import org.example.appschoolevent.enums.TipoCategoria;
 import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.mappers.EventoMapper;
 import org.example.appschoolevent.modelo.Evento;
-import org.example.appschoolevent.modelo.Inscripcion;
 import org.example.appschoolevent.repositorio.EventoRepository;
 import org.example.appschoolevent.repositorio.FotosRepository;
 import org.example.appschoolevent.repositorio.InscripcionRepository;
