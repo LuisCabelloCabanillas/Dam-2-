@@ -58,7 +58,7 @@ public class EventoServiceTest {
     }
 
     @Test
-    @DisplayName("Servicio 1 -> Caso Positivo")
+    @DisplayName("Servicio 2 -> Caso Positivo")
     public void obtenerEventoPorId(){
 
         //Given (Previo al test)
@@ -75,7 +75,7 @@ public class EventoServiceTest {
 
 
     @Test
-    @DisplayName("Servicio 1 -> Caso Negativo")
+    @DisplayName("Servicio 2 -> Caso Negativo")
     public void obtenerEventoPorIdNegativo(){
 
         //Given (Previo al test)
