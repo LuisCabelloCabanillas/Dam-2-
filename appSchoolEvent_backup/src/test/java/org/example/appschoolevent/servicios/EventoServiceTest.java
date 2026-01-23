@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.example.appschoolevent.DTO.EventoDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
 import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
+import org.example.appschoolevent.exceptions.OperacionNoPermitida;
 import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.modelo.Inscripcion;
 import org.example.appschoolevent.modelo.Usuario;
@@ -25,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
-public class EventoServiceTest {
+public class
+EventoServiceTest {
 
     @Autowired
     private EventoService servicio;
@@ -38,6 +40,10 @@ public class EventoServiceTest {
 
     @Autowired
     private InscripcionRepository inscripcionRepositorio;
+
+    @Autowired
+    private InscripcionService inscripcionService;
+
 
     private Usuario usuarioPrincipal;
     private Evento eventoPrincipal;
@@ -70,10 +76,7 @@ public class EventoServiceTest {
         repositorio.save(eventoPrincipal);
 
         // Inscripción inicial
-        Inscripcion inscripcion = new Inscripcion();
-        inscripcion.setUsuario(usuarioPrincipal);
-        inscripcion.setEvento(eventoPrincipal);
-        inscripcionRepositorio.save(inscripcion);
+
     }
 
     @Test
@@ -119,9 +122,13 @@ public class EventoServiceTest {
     @DisplayName("Servicio 3 -> Caso Positivo")
     void filtarEventos(){
 
-        EventoDTO dto = servicio.obtenerEventoPorId(eventoPrincipal.getId());
-        assertNotNull(dto);
-        assertEquals(eventoPrincipal.getNombre(), dto.getNombre());
+        var lista = servicio.filtarEventos(
+                LocalDate.now(),
+                TipoCategoria.Deportivo
+        );
+
+        assertNotNull(lista);
+        assertFalse(lista.isEmpty());
 
     }
 
@@ -129,7 +136,10 @@ public class EventoServiceTest {
     @DisplayName("Servicio 3 -> Caso Negativo")
     void filtarEventosNegativo(){
 
-        assertThrows(ElementosNoEncontrados.class, () -> servicio.filtarEventos(LocalDate.of(2000,1,1), TipoCategoria.Cultural) );
+        assertThrows(ElementosNoEncontrados.class,
+                () -> servicio.filtarEventos(LocalDate.of(1990,1,1),
+                        TipoCategoria.Cultural));
+
 
     }
 
@@ -137,17 +147,32 @@ public class EventoServiceTest {
     @DisplayName("Servicio 4 -> Caso Positivo")
     void detallesEventos(){
 
+        EventoDTO dto = servicio.obtenerEventoPorId(eventoPrincipal.getId());
+        assertNotNull(dto);
+        assertEquals(eventoPrincipal.getNombre(), dto.getNombre());
     }
 
     @Test
     @DisplayName("Servicio 4 -> Caso Negativo")
     void detallesEventosNegativo(){
 
+        assertThrows(ElementosNoEncontrados.class, () -> servicio.filtarEventos(LocalDate.of(2000,1,1), TipoCategoria.Cultural) );
     }
 
     @Test
     @DisplayName("Servicio 5 -> Caso Positivo")
     void actualizarEvento(){
+
+        EventoDTO dto = new EventoDTO();
+        dto.setNombre("Evento Prueba");
+        dto.setRequisitos("Ninguno");
+        dto.setConsiste("Charla Motivacional");
+        dto.setFecha(LocalDate.now().toString());
+        dto.setCategoria("Deportivo");
+
+        EventoDTO resultado = servicio.actualizarEvento(eventoPrincipal.getId(), dto);
+
+        assertEquals("Evento Prueba",  resultado.getNombre());
 
     }
 
@@ -155,11 +180,28 @@ public class EventoServiceTest {
     @DisplayName("Servicio 5 -> Caso Negativo")
     void actualizarEventoNegativo(){
 
+        EventoDTO dto = new EventoDTO();
+        dto.setNombre("Evento Prueba");
+        dto.setRequisitos("Ninguno");
+        dto.setConsiste("Charla Motivacional");
+        dto.setFecha(LocalDate.now().toString());
+        dto.setCategoria("Deportivo");
+
+        assertThrows(ElementosNoEncontrados.class, () -> servicio.actualizarEvento(1, dto));
+
     }
 
     @Test
     @DisplayName("Servicio 6 -> Caso Positivo")
     void InscribirUsuario(){
+
+        Usuario usuario = usuarioPrincipal;
+        Evento evento = eventoPrincipal;
+
+        assertDoesNotThrow(()->inscripcionService.inscribirUsuario(usuario.getId(), evento.getId()));
+
+        boolean existe = inscripcionRepositorio.existsByUsuarioIdAndEventoId(usuario.getId(), evento.getId());
+        assertTrue(existe);
 
     }
 
@@ -167,6 +209,18 @@ public class EventoServiceTest {
     @DisplayName("Servicio 6 -> Caso Negativo")
     void InscribirUsuarioNegativo(){
 
+        Usuario usuario = usuarioPrincipal;
+        Evento evento = eventoPrincipal;
+
+        Inscripcion inscripcion = new Inscripcion();
+        inscripcion.setUsuario(usuario);
+        inscripcion.setEvento(evento);
+        inscripcionRepositorio.save(inscripcion);
+
+        OperacionNoPermitida ex = assertThrows(OperacionNoPermitida.class,
+                () -> inscripcionService.inscribirUsuario(usuario.getId(), evento.getId()));
+
+        assertEquals("El usuario ya está inscrito en este evento", ex.getMessage());
     }
 
     @Test
