@@ -3,6 +3,7 @@ package org.example.appschoolevent.servicios;
 
 import jakarta.transaction.Transactional;
 import org.example.appschoolevent.DTO.EventoDTO;
+import org.example.appschoolevent.DTO.FotosDTO;
 import org.example.appschoolevent.enums.TipoCategoria;
 import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.exceptions.OperacionNoPermitida;
@@ -10,6 +11,7 @@ import org.example.appschoolevent.modelo.Evento;
 import org.example.appschoolevent.modelo.Inscripcion;
 import org.example.appschoolevent.modelo.Usuario;
 import org.example.appschoolevent.repositorio.EventoRepository;
+import org.example.appschoolevent.repositorio.FotosRepository;
 import org.example.appschoolevent.repositorio.InscripcionRepository;
 import org.example.appschoolevent.repositorio.UsuarioRepository;
 import org.junit.jupiter.api.*;
@@ -43,6 +45,12 @@ EventoServiceTest {
 
     @Autowired
     private InscripcionService inscripcionService;
+
+    @Autowired
+    private FotosService fotosService;
+
+    @Autowired
+    private FotosRepository fotosRepositorio;
 
 
     private Usuario usuarioPrincipal;
@@ -227,11 +235,28 @@ EventoServiceTest {
     @DisplayName("Servicio 7 -> Caso Positivo")
     void subirFoto(){
 
+        String url = "http://foto.com/imagen.jpg";
+
+        FotosDTO dto = fotosService.guardarFoto(eventoPrincipal.getId(), url);
+
+        assertNotNull(dto);
+        assertEquals(url, dto.getUrl());
+        assertEquals(1, fotosRepositorio.count());
+
+
+
     }
 
     @Test
     @DisplayName("Servicio 7 -> Caso Negativo")
     void subirFotoNegativo(){
+
+        String url = "   ";
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> fotosService.guardarFoto(eventoPrincipal.getId(), url));
+
+        assertEquals("La URL de la foto no puede estar vacía", ex.getMessage());
 
     }
 }

@@ -24,4 +24,5 @@ public class UsuarioActividadDTO {
         this.totalGlobal = totalComentarios + totalInscripciones;
     }
 
+
 }

@@ -107,7 +107,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Caso 1 -> Negativo")
+    @DisplayName("Servicio 1 -> Negativo")
     void registrarUsuarioConCorreoExistente(){
 
         //Given

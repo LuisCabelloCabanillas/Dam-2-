@@ -7,4 +7,6 @@ public class FotosDTO {
     private Integer id;
     private Integer idEvento;
     private String url;
+
+
 }
