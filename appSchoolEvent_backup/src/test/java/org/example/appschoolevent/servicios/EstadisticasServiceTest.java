@@ -28,9 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EstadisticasServiceTest {
 
     @Autowired
-    private EstadisticaService servicio;
-
-    @Autowired
     private EventoRepository repositorio;
 
     @Autowired
@@ -104,7 +101,7 @@ public class EstadisticasServiceTest {
     void top5Eventos(){
         for (int i = 1; i <= 5; i++) {
             Evento dto = new Evento();
-            dto.setNombre("Evento" + 1);
+            dto.setNombre("Evento" + i);
             dto.setRequisitos("Ninguno");
             dto.setConsiste("Charla Motivacional");
             dto.setFecha(LocalDate.parse(LocalDate.now().toString()));
@@ -117,7 +114,6 @@ public class EstadisticasServiceTest {
         var top = estadisticaService.obtenerEstadisticas();
         assertNotNull(top);
         assertTrue(top.size() <= 5);
-
     }
 
     @Test
@@ -143,9 +139,6 @@ public class EstadisticasServiceTest {
         assertEquals(2L, usuario.getTotalInscripciones());
         assertEquals(0L, usuario.getTotalComentarios());
         assertEquals(2L, usuario.getTotalGlobal());
-
-
-
     }
 
     @Test
@@ -157,7 +150,6 @@ public class EstadisticasServiceTest {
         eventoRepository.deleteAll();
 
         assertThrows(ElementosNoEncontrados.class, () -> usuarioActividadService.obtenerUsuarioMasActivo());
-
     }
 
 }

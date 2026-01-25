@@ -2,7 +2,6 @@ package org.example.appschoolevent.servicios;
 
 import lombok.AllArgsConstructor;
 import org.example.appschoolevent.DTO.EstadisticaDTO;
-import org.example.appschoolevent.DTO.UsuarioActividadDTO;
 import org.example.appschoolevent.exceptions.ElementosNoEncontrados;
 import org.example.appschoolevent.repositorio.EventoRepository;
 import org.springframework.data.domain.PageRequest;
