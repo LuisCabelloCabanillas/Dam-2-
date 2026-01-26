@@ -18,6 +18,7 @@ BLUE = (0, 0, 255)
 
 #Inicio
 pygame.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Brick Breaker")
 clock = pygame.time.Clock()
@@ -25,11 +26,12 @@ clock = pygame.time.Clock()
 #Sonido
 
 try:
-    sonido_rebote = pygame.mixer.music.load("sonido.mp3")
-    sonido_romper = pygame.mixer.music.load("sonido.mp3")
-    sonido_perder = pygame.mixer.music.load("sonido.mp3")
+    sonido_rebote = pygame.mixer.Sound("sonido_rebote.mp3")
+    sonido_romper = pygame.mixer.Sound("sonido_romper.mp3")
+    sonido_rebote.set_volume(0.4)
+    sonido_romper.set_volume(0.5)
 except:
-    sonido_rebote = sonido_romper = sonido_perder = None
+    sonido_rebote = sonido_romper = None
 
 #Clases
 class Barra:
@@ -122,13 +124,15 @@ fuente = pygame.font.SysFont("Arial", 20)
 
 fila_actual = 6
 tiempo_fila = 0
-Tiempo_para_fn= 50000
+Tiempo_para_fn= 40000
+tiempo_jugado= 0
 
 
 #Bucle principal
 running = True
 while running:
     dt = clock.tick(FPS)
+    tiempo_jugado += dt
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -140,7 +144,28 @@ while running:
                 esperando_lanzamiento = False
 
     teclas = pygame.key.get_pressed()
-    barra.mover(teclas)
+
+    if teclas[pygame.K_RIGHT] and barra.rect.right < WIDTH:
+        barra.rect.x += barra.speed
+    if teclas[pygame.K_LEFT] and barra.rect.left > 0:
+        barra.rect.x -= barra.speed
+
+
+    mouse_x, _ = pygame.mouse.get_pos()
+
+    if pygame.mouse.get_focused():
+        barra.rect.centerx = mouse_x
+
+    if barra.rect.left < 0:
+        barra.rect.left = 0
+    if barra.rect.right > WIDTH:
+        barra.rect.right = WIDTH
+
+    if pygame.mouse.get_pressed()[0] and esperando_lanzamiento:
+        bola.lanzar()
+        bola_lanzada = True
+        esperando_lanzamiento = False
+
     if bola_lanzada:
         bola.mover()
     else:
@@ -161,7 +186,6 @@ while running:
 
     if bola.y > HEIGHT:
         vidas -= 1
-        if sonido_perder: sonido_perder.play()
         bola.reset()
         bola_lanzada=False
         esperando_lanzamiento = True
@@ -188,8 +212,19 @@ while running:
     for bloque in bloques[:]:
         bloque.dibujo()
 
-    texto = fuente.render(f"Puntos: {Puntuacion}     Vidas: {vidas}", True, WHITE)
-    screen.blit(texto, (20, 20))
+    segundos_jugados= tiempo_jugado // 1000
+    segundos_restantes = (Tiempo_para_fn - tiempo_fila) // 1000
+    if segundos_restantes < 0:
+        segundos_restantes = 0
+
+    texto1 = fuente.render(f"Puntos: {Puntuacion}     Vidas: {vidas}", True, WHITE)
+    texto2 = fuente.render(f"Tiempo jugado: {segundos_jugados}s", True, WHITE)
+    texto3 = fuente.render(f"Siguiente fila en: {segundos_restantes}s", True, WHITE)
+
+
+    screen.blit(texto1, (20, 10))
+    screen.blit(texto2, (20, 30))
+    screen.blit(texto3, (20, 50))
 
     pygame.display.flip()
 
