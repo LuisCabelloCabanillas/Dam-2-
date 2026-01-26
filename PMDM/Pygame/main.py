@@ -87,6 +87,7 @@ class Bloques:
     def dibujo(self):
         pygame.draw.rect(screen, self.color, self.rect)
 
+#Crear bloques
 def crear_bloques():
     bloques = []
     colores = [RED,GREEN,BLUE]
@@ -97,19 +98,37 @@ def crear_bloques():
             bloques.append(Bloques(x, y, colores[fila % 3]))
     return bloques
 
+#Función Propia
+def agregar_fila():
+    global fila_actual, bloques
+    colores = [RED,GREEN,BLUE]
+    fila_actual += 1
+    y= 80 +(fila_actual - 1) * 40
+    for columna in range(6):
+        x = 30 + columna * 70
+        bloques.append(Bloques(x, y, colores[(fila_actual-1) % 3]))
+
+#Inicialización de objetos
 barra = Barra()
 bola = Bola()
 bloques = crear_bloques()
 
 bola_lanzada = False
+esperando_lanzamiento = True
 
 Puntuacion = 0
 vidas = 3
 fuente = pygame.font.SysFont("Arial", 20)
 
+fila_actual = 6
+tiempo_fila = 0
+Tiempo_para_fn= 50000
+
+
+#Bucle principal
 running = True
 while running:
-    clock.tick(FPS)
+    dt = clock.tick(FPS)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -120,8 +139,8 @@ while running:
                 bola_lanzada = True
                 esperando_lanzamiento = False
 
-    llaves = pygame.key.get_pressed()
-    barra.mover(llaves)
+    teclas = pygame.key.get_pressed()
+    barra.mover(teclas)
     if bola_lanzada:
         bola.mover()
     else:
@@ -149,6 +168,14 @@ while running:
 
         if vidas <= 0:
             running = False
+
+    tiempo_fila += dt
+    if tiempo_fila >= Tiempo_para_fn:
+        tiempo_fila = 0
+        if fila_actual >= 9:
+            running = False
+        else:
+            agregar_fila()
 
     if len(bloques) <= 0:
         running = False
