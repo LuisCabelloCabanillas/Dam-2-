@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comentarios")
+@Table(name = "comentarios", schema = "usuario")
 @Getter
 @Setter
 @NoArgsConstructor

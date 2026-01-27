@@ -11,7 +11,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "fotos")
+@Table(name = "fotos", schema = "usuario")
 @Getter
 @Setter
 @NoArgsConstructor

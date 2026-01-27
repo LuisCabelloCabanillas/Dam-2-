@@ -6,7 +6,7 @@ import sys
 
 #Tamaño
 WIDTH= 480
-HEIGHT = 800
+HEIGHT = 600
 FPS = 60
 
 #Colores
