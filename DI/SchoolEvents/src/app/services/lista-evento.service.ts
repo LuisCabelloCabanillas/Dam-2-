@@ -2,12 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Evento } from "../models/evento";
-import {environment} from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class ListaEventosService {
 
-  private API = environment.apiUrl;
+  private API = "https://backend-q6zm.onrender.com";
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) {}
