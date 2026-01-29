@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-
+@CrossOrigin(origins = "https://frontend-049h.onrender.com")
 @RestController
 @RequestMapping("/eventos")
 @AllArgsConstructor
