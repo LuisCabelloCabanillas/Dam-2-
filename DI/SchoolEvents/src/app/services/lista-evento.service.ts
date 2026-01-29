@@ -2,11 +2,12 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Evento } from "../models/evento";
+import {environment} from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class ListaEventosService {
 
-  private API = "/api";
+  private API = environment.apiUrl;
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) {}
@@ -28,7 +29,7 @@ export class ListaEventosService {
   }
 
   eliminarEvento(id: number): Observable<any> {
-    return this.http.delete(`${this.API}/eliminar/${id}`);
+    return this.http.delete(`${this.API}/eventos/eliminar/${id}`);
   }
 
 }
