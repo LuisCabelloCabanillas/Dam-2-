@@ -179,7 +179,7 @@ while running:
     for bloque in bloques[:]:
         if bola.rect.colliderect(bloque.rect):
             bloques.remove(bloque)
-            bola.speed_y *= -1
+            bola.speed_y *= -1.05
             Puntuacion += 10
             if sonido_romper: sonido_romper.play()
             break
