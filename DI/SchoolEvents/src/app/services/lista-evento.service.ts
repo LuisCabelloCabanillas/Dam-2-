@@ -6,7 +6,7 @@ import { Evento } from "../models/evento";
 @Injectable({ providedIn: 'root' })
 export class ListaEventosService {
 
-  private API = "/api/eventos";
+  private API = "https://backend-q6zm.onrender.com/eventos";
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) {}
