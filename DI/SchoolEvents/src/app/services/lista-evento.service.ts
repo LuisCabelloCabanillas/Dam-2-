@@ -6,25 +6,25 @@ import { Evento } from "../models/evento";
 @Injectable({ providedIn: 'root' })
 export class ListaEventosService {
 
-  private API = "https://backend-q6zm.onrender.com/eventos";
+  private API = "/api";
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) {}
 
   obtenerEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.API + "/todos");
+    return this.http.get<Evento[]>(this.API + "/eventos/todos");
   }
 
   crearEventos(evento: Evento): Observable<any> {
-    return this.http.post(this.API + "/crear", evento);
+    return this.http.post(this.API + "/eventos/crear", evento);
   }
 
   editarEvento(id: number, evento: Evento): Observable<any> {
-    return this.http.put(this.API + "/actualizar/" + id, evento);
+    return this.http.put(this.API + "/eventos/actualizar/" + id, evento);
   }
 
   detalleEvento(id: number): Observable<Evento> {
-    return this.http.get<Evento>(this.API + "/buscar/" + id);
+    return this.http.get<Evento>(this.API + "/eventos/buscar/" + id);
   }
 
   eliminarEvento(id: number): Observable<any> {
