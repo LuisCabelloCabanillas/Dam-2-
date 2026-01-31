@@ -11,10 +11,10 @@ import {
   IonToolbar
 } from '@ionic/angular/standalone';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {ListaEventosService} from "../services/lista-evento.service";
-import {Evento} from "../models/evento";
-import {TipoCategoria} from "../enums/TipoCategoria";
-import {ToastController} from "@ionic/angular";
+import {ListaEventosService} from '../services/lista-evento.service';
+import {Evento} from '../models/evento';
+import {TipoCategoria} from '../enums/TipoCategoria';
+import {ToastController} from '@ionic/angular';
 
 @Component({
   selector: 'app-pag-editar',
@@ -27,56 +27,51 @@ export class PagEditarPage implements OnInit {
 
   TipoCategoria = TipoCategoria;
   evento: Evento = {
-    nombre:'',
+    nombre: '',
     lugar: '',
     requisitos: '',
     fecha: '',
     consiste: '',
     categoria: TipoCategoria.otros
-
   };
   id: number | null = null;
 
   constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private router: Router,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private route: ActivatedRoute,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private eventoService: ListaEventosService,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private toastCtrl: ToastController
   ) { }
 
   ngOnInit() {
-    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    const paramId = this.route.snapshot.paramMap.get('id');
+    this.id = paramId ? Number(paramId) : null;
     if (this.id) {
       this.cargarEvento(this.id);
     }
   }
 
-  cargarEvento(id: number) {
-    this.eventoService.detalleEvento(id).subscribe({
-      next: (data) => this.evento = data,
-      error: (err) =>
-        console.error('Error al cargar evento', err)
-    });
+  async cargarEvento(id: number) {
+    try {
+      this.evento = await this.eventoService.detalleEvento(id);
+    } catch (err) {
+      console.error('Error al cargar evento', err);
+    }
   }
 
-  guardarCambios() {
+  async guardarCambios() {
     if (!this.id) return;
-
-    this.eventoService.editarEvento(this.id, this.evento).subscribe({
-      next: async () => {
-        await this.mostrarToast('Evento editado', 'success');
-        this.router.navigate(['/lista-eventos-ad']);
-      },
-      error: (err) => console.error('Error al editar evento', err)
-    });
+    try {
+      await this.eventoService.editarEvento(this.id, this.evento);
+      await this.mostrarToast('Evento editado', 'success');
+      this.router.navigate(['/lista-eventos-ad']);
+    } catch (err) {
+      console.error('Error al editar evento', err);
+    }
   }
+
   async mostrarToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000, color });
     toast.present();
   }
-
 }

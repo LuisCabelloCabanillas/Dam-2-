@@ -25,19 +25,8 @@ import {ToastController} from "@ionic/angular";
 })
 export class PaginaAnadirPage implements OnInit {
 
-  constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private router: Router,
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  private eventoService: ListaEventosService,
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  private toastCtrl: ToastController
-  ) { }
+  TipoCategoria = TipoCategoria;
 
-  ngOnInit() {
-  }
-
-  TipoCategoria = TipoCategoria
   evento: Evento = {
     nombre: '',
     lugar: '',
@@ -45,25 +34,30 @@ export class PaginaAnadirPage implements OnInit {
     fecha: '',
     consiste: '',
     categoria: TipoCategoria.otros
+  };
+
+  constructor(
+    private router: Router,
+    private eventoService: ListaEventosService,
+    private toastCtrl: ToastController
+  ) { }
+
+  ngOnInit() {}
+
+  async crearEvento() {
+    try {
+      const creado = await this.eventoService.crearEventos(this.evento);
+      await this.mostrarToast('Evento creado correctamente', 'success');
+      this.evento = creado;
+      await this.router.navigate(['/lista-eventos-ad']);
+    } catch (err) {
+      console.error(err);
+      await this.mostrarToast('Error al crear el evento', 'danger');
+    }
   }
 
-  crearEvento() {
-   this.eventoService.crearEventos(this.evento).subscribe({
-     next: async (data) => {
-       await this.mostrarToast('Evento creado correctamente', 'success');
-       this.evento = data;
-       await this.router.navigate(['/lista-eventos-ad']);
-     },
-     error: async (err) => {
-       await this.mostrarToast('Error al crear el evento', 'danger');
-       await this.router.navigate(['/anadir-evento']);
-     }
-   });
-  }
   async mostrarToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000, color });
     toast.present();
   }
-
-
 }

@@ -21,17 +21,11 @@ export class Evento1AdPage implements OnInit {
   id!: number;
 
   constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private eventoService: ListaEventosService,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private toastCtrl: ToastController,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private alertCtrl: AlertController,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private route: ActivatedRoute,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private router: Router,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private location: Location
   ) { }
 
@@ -42,22 +36,18 @@ export class Evento1AdPage implements OnInit {
       this.router.navigate(['/lista-eventos-ad']);
       return;
     }
-
     this.id = Number(paramId);
     this.cargarEvento();
   }
 
-  cargarEvento() {
-    this.eventoService.detalleEvento(this.id).subscribe({
-      next: (data) => {
-        console.log('Evento cargado:', data);
-        this.evento = data;
-      },
-      error: async (err) => {
-        await this.mostrarToast('Error al cargar el evento', 'danger');
-        this.router.navigate(['/lista-eventos-ad']);
-      }
-    });
+  async cargarEvento() {
+    try {
+      this.evento = await this.eventoService.detalleEvento(this.id);
+    } catch (err) {
+      console.error(err);
+      await this.mostrarToast('Error al cargar el evento', 'danger');
+      this.router.navigate(['/lista-eventos-ad']);
+    }
   }
 
   async eliminarEvento() {
@@ -71,19 +61,18 @@ export class Evento1AdPage implements OnInit {
       message: '¿Está seguro de eliminar el evento?',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        { text: 'Eliminar', role: 'destructive', handler: () => {
-            this.eventoService.eliminarEvento(this.id).subscribe({
-              next: async () => {
-                await this.mostrarToast('Evento eliminado', 'success');
-                this.location.back();
-              },
-              error: async (err) => {
-                if (err.status === 404) {
-                  await this.mostrarToast('Evento ya eliminado', 'warning');
-                }
-                this.location.back();
+        { text: 'Eliminar', role: 'destructive', handler: async () => {
+            try {
+              await this.eventoService.eliminarEvento(this.id);
+              await this.mostrarToast('Evento eliminado', 'success');
+              this.location.back();
+            } catch (err: any) {
+              console.error(err);
+              if (err?.status === 404) {
+                await this.mostrarToast('Evento ya eliminado', 'warning');
               }
-            });
+              this.location.back();
+            }
           }
         }
       ]
@@ -92,13 +81,12 @@ export class Evento1AdPage implements OnInit {
     await alert.present();
   }
 
-
   async mostrarToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000, color });
     toast.present();
   }
 
-  getFechaFormateada(fecha: string):string {
+  getFechaFormateada(fecha: string): string {
     return new Date(fecha).toLocaleDateString();
   }
 }

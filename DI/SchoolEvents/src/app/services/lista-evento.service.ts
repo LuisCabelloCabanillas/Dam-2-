@@ -7,33 +7,27 @@ export class ListaEventosService {
 
   private API = 'https://backend-q6zm.onrender.com';
 
-  constructor() {}
-
   async obtenerEventos(): Promise<Evento[]> {
-    const response = await Http.get({ url: `${this.API}/eventos/todos` });
-    return response.data as Evento[];
+    const res = await Http.get({ url: `${this.API}/eventos/todos` });
+    return res.data as Evento[];
+  }
+
+  async crearEventos(evento: Evento): Promise<Evento> {
+    const res = await Http.post({ url: `${this.API}/eventos/crear`, data: evento });
+    return res.data as Evento;
+  }
+
+  async editarEvento(id: number, evento: Evento): Promise<Evento> {
+    const res = await Http.put({ url: `${this.API}/eventos/actualizar/${id}`, data: evento });
+    return res.data as Evento;
   }
 
   async detalleEvento(id: number): Promise<Evento> {
-    const response = await Http.get({ url: `${this.API}/eventos/buscar/${id}` });
-    return response.data as Evento;
+    const res = await Http.get({ url: `${this.API}/eventos/buscar/${id}` });
+    return res.data as Evento;
   }
 
-  async crearEventos(evento: Evento) {
-    const response = await Http.post({ url: `${this.API}/eventos/crear`, data: evento });
-    return response.data;
-  }
-
-  async editarEvento(id: number, evento: Evento) {
-    const response = await Http.put({ url: `${this.API}/eventos/actualizar/${id}`, data: evento });
-    return response.data;
-  }
-
-  async eliminarEvento(id: number) {
-    const response = await Http.request({
-      method: 'DELETE',
-      url: `${this.API}/eventos/eliminar/${id}`
-    });
-    return response.data;
+  async eliminarEvento(id: number): Promise<void> {
+    await Http.del({ url: `${this.API}/eventos/eliminar/${id}` });
   }
 }
