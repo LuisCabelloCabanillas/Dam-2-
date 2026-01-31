@@ -20,7 +20,7 @@ public class CorsConfig {
                                 "capacitor://localhost"
                         )
                         .allowedMethods("*") // todos los métodos
-                        .allowCredentials(false); // true si usas cookies
+                        .allowCredentials(true); // true si usas cookies
             }
         };
     }
