@@ -33,7 +33,7 @@ export class ListaEventosAdPage implements ViewWillEnter, OnInit {
 
   async cargarEventos() {
     try {
-      this.eventos = await this.eventoService.obtenerEventos(); // <-- async/await con Capacitor HTTP
+      this.eventos = await this.eventoService.obtenerEventos();
       console.log('Eventos recibidos:', this.eventos);
     } catch (error: any) {
       const toast = await this.toastCtrl.create({
@@ -44,5 +44,4 @@ export class ListaEventosAdPage implements ViewWillEnter, OnInit {
       toast.present();
     }
   }
-
 }

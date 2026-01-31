@@ -1,20 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonSelect, IonSelectOption,
-  IonTextarea,
-  IonToolbar
-} from '@ionic/angular/standalone';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {ListaEventosService} from '../services/lista-evento.service';
-import {Evento} from '../models/evento';
-import {TipoCategoria} from '../enums/TipoCategoria';
-import {ToastController} from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonButton, IonContent, IonHeader, IonInput, IonSelect, IonSelectOption, IonTextarea, IonToolbar } from '@ionic/angular/standalone';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ListaEventosService } from "../services/lista-evento.service";
+import { Evento } from "../models/evento";
+import { TipoCategoria } from "../enums/TipoCategoria";
+import { ToastController } from "@ionic/angular";
 
 @Component({
   selector: 'app-pag-editar',
@@ -46,9 +38,7 @@ export class PagEditarPage implements OnInit {
   ngOnInit() {
     const paramId = this.route.snapshot.paramMap.get('id');
     this.id = paramId ? Number(paramId) : null;
-    if (this.id) {
-      this.cargarEvento(this.id);
-    }
+    if (this.id) this.cargarEvento(this.id);
   }
 
   async cargarEvento(id: number) {

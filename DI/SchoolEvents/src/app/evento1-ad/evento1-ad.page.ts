@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonButton, IonContent, IonHeader, IonSpinner, IonToolbar} from '@ionic/angular/standalone';
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {ListaEventosService} from "../services/lista-evento.service";
-import {AlertController, ToastController} from "@ionic/angular";
-import {Evento} from "../models/evento";
-import {Location} from "@angular/common";
+import { IonButton, IonContent, IonHeader, IonSpinner, IonToolbar } from '@ionic/angular/standalone';
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ListaEventosService } from "../services/lista-evento.service";
+import { AlertController, ToastController } from "@ionic/angular";
+import { Evento } from "../models/evento";
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-evento1-ad',
