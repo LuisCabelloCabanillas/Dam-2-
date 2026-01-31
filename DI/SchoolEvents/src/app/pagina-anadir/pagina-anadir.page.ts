@@ -46,7 +46,7 @@ export class PaginaAnadirPage implements OnInit {
 
   async crearEvento() {
     try {
-      const data = await this.eventoService.crearEvento(this.evento);
+      const data = await this.eventoService.crearEventos(this.evento);
       await this.mostrarToast('Evento creado correctamente', 'success');
       this.evento = data;
       await this.router.navigate(['/lista-eventos-ad']);
