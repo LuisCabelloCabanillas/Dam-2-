@@ -15,12 +15,12 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // todas las rutas
                         .allowedOrigins(
-                                "https://frontend-049h.onrender.com",
-                                "http://localhost:4200", // para desarrollo
-                                "capacitor://localhost"
+                                "https://frontend-049h.onrender.com", // frontend deployado
+                                "http://localhost:4200",             // frontend local para desarrollo
+                                "capacitor://localhost"              // para apps móviles con Capacitor
                         )
-                        .allowedMethods("*") // todos los métodos
-                        .allowCredentials(true); // true si usas cookies
+                        .allowedMethods("*")   // todos los métodos HTTP
+                        .allowCredentials(false); // false si no usas cookies
             }
         };
     }
