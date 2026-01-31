@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "https://frontend-049h.onrender.com")
+@CrossOrigin(origins = {"https://frontend-049h.onrender.com", "capacitor://localhost"})
 @RestController
 @RequestMapping("/usuarios")
 @AllArgsConstructor

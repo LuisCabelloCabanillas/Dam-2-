@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "https://frontend-049h.onrender.com")
+@CrossOrigin(origins = {"https://frontend-049h.onrender.com", "capacitor://localhost"})
 @RestController
 @RequestMapping("estadisticasUsuario")
 @AllArgsConstructor

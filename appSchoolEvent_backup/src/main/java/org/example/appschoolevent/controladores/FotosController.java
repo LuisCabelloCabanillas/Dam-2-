@@ -6,7 +6,7 @@ import org.example.appschoolevent.servicios.FotosService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://frontend-049h.onrender.com")
+@CrossOrigin(origins = {"https://frontend-049h.onrender.com", "capacitor://localhost"})
 @RestController
 @RequestMapping("/eventos")
 @AllArgsConstructor
