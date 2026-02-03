@@ -2,6 +2,11 @@
 <resources>
     <string name="app_name">SchoolEvents</string>
     <string name="title_activity_main">SchoolEvents</string>
+<<<<<<< HEAD
     <string name="package_name">com.tuempresa.schoolevents</string>
     <string name="custom_url_scheme">com.tuempresa.schoolevents</string>
+=======
+    <string name="package_name">io.ionic.starter</string>
+    <string name="custom_url_scheme">io.ionic.starter</string>
+>>>>>>> e49ae5276b1016f99d63bb55480d5693f2a88474
 </resources>
