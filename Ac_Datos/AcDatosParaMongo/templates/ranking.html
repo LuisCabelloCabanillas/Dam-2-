@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container py-4">
+    <h2 class="text-center mb-4">Juegos Ranking</h2>
+
+    <!-- Filtro por nombre -->
+    <div class="mb-3 text-center">
+        <form method="get" class="d-flex justify-content-center">
+            <input type="text" name="nombre" class="form-control w-50 me-2" placeholder="Buscar juego..." value="{{ busqueda }}">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+
+    <!-- Contenedor del TOP 10 -->
+    <h4 class="text-center mb-4">Top 10</h4>
+    <div class="row g-3" id="top-slots">
+        {% for i in top_slots %}
+            <div class="col-2 col-md-2">
+                <div class="border rounded p-3 bg-white text-center slot" data-position="{{ i }}">
+                    <h5 class="mb-3">{{ i }}</h5>
+                    <div class="slot-drop-area" style="min-height: 80px; display:flex; align-items:center; justify-content:center;">
+                        {% if top_items_slots|length >= forloop.counter %}
+                            {% if top_items_slots.forloop.counter0 %}
+                                {{ top_items_slots.forloop.counter0.name }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr class="my-4">
+
+    <h4 class="text-center mb-3">Todos los juegos</h4>
+    <div class="row g-3" id="all-items">
+        {% for item in page_obj %}
+            <div class="col-2 col-md-2">
+                <div class="card p-3 text-center bg-light d-flex flex-column justify-content-center align-items-center"
+                     data-id="{{ item.code }}">
+                    <h6 class="m-0">{{ item.name }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if saga_filtro %}&saga={{ saga_filtro }}{% endif %}">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            {% endif %}
+            <li class="page-item disabled">
+                <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            </li>
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if saga_filtro %}&saga={{ saga_filtro }}{% endif %}">Siguiente</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<!-- SortableJS -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const allItems = document.getElementById('all-items');
+
+    // Hacer todos los juegos arrastrables
+    Sortable.create(allItems, {
+        group: {name: 'shared', pull: true, put: false},
+        sort: false,
+        animation: 150
+    });
+
+    // Hacer slots como zonas donde se pueden colocar juegos
+    document.querySelectorAll('.slot-drop-area').forEach(slotArea => {
+        Sortable.create(slotArea, {
+            group: 'shared',
+            animation: 150,
+            sort: false,
+            onAdd: evt => {
+                if (slotArea.children.length > 1) {
+                    evt.from.appendChild(evt.item); // devuelve si ya hay uno
+                    return;
+                }
+                evt.item.style.width = '100%';
+                saveTopItems(); // Guardamos al arrastrar
+            },
+            onRemove: evt => {
+                saveTopItems(); // Guardamos si se quita del slot
+            }
+        });
+    });
+
+    // Función para enviar el top al servidor
+    function saveTopItems() {
+        const topData = {};
+        document.querySelectorAll('.slot').forEach(slot => {
+            const id = slot.dataset.position;
+            const item = slot.querySelector('[data-id]');
+            if (item) topData[id] = item.dataset.id;
+        });
+
+        fetch("{% url 'save_top' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(topData)
+        });
+    }
+});
+</script>
+
+<style>
+.card {
+    width: 100%;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.slot { min-height: 80px; transition: background 0.2s; }
+.slot:hover { background-color: #f8f9fa; }
+.slot-drop-area { display: flex; justify-content: center; align-items: center; }
+</style>
+{% endblock %}

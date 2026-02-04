@@ -3,7 +3,7 @@ import pandas as pd
 
 # Cargar HTML local
 with open("level5.html", "r", encoding="utf-8") as f:
-    soup = BeautifulSoup(f.read(), "lxml")
+    soup = BeautifulSoup(f.read(), "html.parser")
 
 juegos = []
 
@@ -29,21 +29,13 @@ for card in cards:
     descripcion_tag = card.select_one(".cardContent > p")
     descripcion = descripcion_tag.get_text(strip=True) if descripcion_tag else ""
 
-    foto_tag = card.select_one("img")
 
-    # Enlace al juego
-    link_tag = card.select_one("a")
-    if link_tag and link_tag.has_attr("href"):
-        url = "https://gamesdb.launchbox-app.com" + link_tag["href"]
-    else:
-        url = ""
 
     juegos.append({
         "Titulo": titulo,
         "Plataforma": plataforma,
         "Fecha": fecha,
-        "Descripcion": descripcion,
-        "URL": url
+        "Descripcion": descripcion
     })
 
 # Guardar en CSV
