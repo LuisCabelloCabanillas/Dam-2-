@@ -16,15 +16,16 @@
     <!-- Contenedor del TOP 10 -->
     <h4 class="text-center mb-4">Top 10</h4>
     <div class="row g-3" id="top-slots">
-        {% for i in top_slots %}
+        {% for slot_juego in top_items_slots %}
             <div class="col-2 col-md-2">
-                <div class="border rounded p-3 bg-white text-center slot" data-position="{{ i }}">
-                    <h5 class="mb-3">{{ i }}</h5>
+                <div class="border rounded p-3 bg-white text-center slot" data-position="{{ forloop.counter }}">
+                    <h5 class="mb-3">{{ forloop.counter }}</h5>
                     <div class="slot-drop-area" style="min-height: 80px; display:flex; align-items:center; justify-content:center;">
-                        {% if top_items_slots|length >= forloop.counter %}
-                            {% if top_items_slots.forloop.counter0 %}
-                                {{ top_items_slots.forloop.counter0.name }}
-                            {% endif %}
+                        {% if slot_juego %}
+                            <div class="card p-3 text-center bg-light d-flex flex-column justify-content-center align-items-center"
+                                 data-id="{{ slot_juego.code }}" style="width: 100%;">
+                                <h6 class="m-0">{{ slot_juego.name }}</h6>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -50,17 +51,19 @@
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if saga_filtro %}&saga={{ saga_filtro }}{% endif %}">Anterior</a>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&nombre={{ busqueda }}">Anterior</a>
                 </li>
             {% else %}
                 <li class="page-item disabled"><span class="page-link">Anterior</span></li>
             {% endif %}
+
             <li class="page-item disabled">
                 <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
             </li>
+
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if saga_filtro %}&saga={{ saga_filtro }}{% endif %}">Siguiente</a>
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&nombre={{ busqueda }}">Siguiente</a>
                 </li>
             {% else %}
                 <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
@@ -77,9 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hacer todos los juegos arrastrables
     Sortable.create(allItems, {
-        group: {name: 'shared', pull: true, put: false},
+        group: {name: 'shared', pull: true, put: true},
         sort: false,
-        animation: 150
+        animation: 150,
+        onAdd: evt => {
+            saveTopItems()
+        }
     });
 
     // Hacer slots como zonas donde se pueden colocar juegos
@@ -87,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         Sortable.create(slotArea, {
             group: 'shared',
             animation: 150,
-            sort: false,
             onAdd: evt => {
                 if (slotArea.children.length > 1) {
                     evt.from.appendChild(evt.item); // devuelve si ya hay uno

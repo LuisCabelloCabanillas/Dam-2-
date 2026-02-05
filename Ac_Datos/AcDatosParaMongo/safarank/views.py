@@ -1,17 +1,14 @@
-import csv
-import os
-
+import json
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
-from AcDatosParaMongo import settings
+from django.conf import settings  # Importamos settings para usar la conexión MONGO_DB
 
+# 1. Accedemos a la colección de juegos
+db = settings.MONGO_DB
+coleccion_juegos = db['juegos']  # 'juegos' es el nombre de la colección en Compass
 
-# Create your views here.
-
-def mostrar_inicio(request):
-    return render(request, 'inicio.html')
-
+# 2. Tu diccionario de SAGAS se queda aquí
 SAGAS = {
     "Profesor Layton": ["Professor Layton", "Layton", "Layton Brothers"],
     "Ni no Kuni": ["Ni no Kuni"],
@@ -36,39 +33,49 @@ SAGAS = {
     "Bugs vs Tanks": ["Bugs vs Tanks"],
 }
 
+
+def mostrar_inicio(request):
+    return render(request, 'inicio.html')
+
+
 def lista_juegos(request):
-    saga_filtro = request.GET.get('saga', None)
-    juegos = []
+    saga_filtro = request.GET.get('saga', "Todas")
 
-    csv_path = os.path.join(settings.BASE_DIR, 'datos', 'juegos.csv')
-    with open(csv_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            # Detectar la saga automáticamente
-            juego_saga = "Otras"
-            for saga, palabras in SAGAS.items():
-                if any(p.lower() in row['Titulo'].lower() for p in palabras):
-                    juego_saga = saga
-                    break
+    cursor = coleccion_juegos.find({})
+    juegos_list = []
 
-            # Filtrar por saga si se ha seleccionado
-            if saga_filtro and saga_filtro != "Todas" and saga_filtro != juego_saga:
-                continue
+    for doc in cursor:
+        # Normalizamos los datos de la DB (por si vienen en mayúscula o minúscula)
+        titulo = doc.get('Titulo') or doc.get('titulo') or "Sin Título"
+        descripcion = doc.get('Descripcion') or doc.get('descripcion') or ""
+        plataforma = doc.get('Plataforma') or doc.get('plataforma') or ""
+        fecha = doc.get('Fecha') or doc.get('fecha') or ""
+        foto = doc.get('Foto') or doc.get('foto') or ""
 
-            juegos.append({
-                'Titulo': row['Titulo'],
-                'Plataforma': row['Plataforma'],
-                'Fecha': row['Fecha'],
-                'Descripcion': row['Descripcion'],
-                'Saga': juego_saga
-            })
+        # Lógica de detección de Saga
+        juego_saga = "Otras"
+        for saga, palabras in SAGAS.items():
+            if any(p.lower() in titulo.lower() for p in palabras):
+                juego_saga = saga
+                break
 
-    # Paginación (6 juegos por página)
-    paginator = Paginator(juegos, 9)
+        # FILTRO DE SAGA: Ahora comparamos correctamente
+        if saga_filtro != "Todas" and saga_filtro != juego_saga:
+            continue
+
+        juegos_list.append({
+            'Titulo': titulo,
+            'Plataforma': plataforma,
+            'Fecha': fecha,
+            'Descripcion': descripcion,
+            'Foto': foto,
+            'Saga': juego_saga
+        })
+
+    paginator = Paginator(juegos_list, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Enviar todas las sagas al template
     return render(request, 'lista_juegos.html', {
         'page_obj': page_obj,
         'sagas': ["Todas"] + list(SAGAS.keys()),
@@ -76,25 +83,29 @@ def lista_juegos(request):
     })
 
 def rankings(request):
-    busqueda = request.GET.get('nombre', '').strip().lower()
+    busqueda = request.GET.get('nombre', '').strip()
 
-    # 1️⃣ Cargar todos los juegos desde CSV
+    # Búsqueda flexible en MongoDB para que encuentre por Titulo o titulo
+    query = {}
+    if busqueda:
+        query = {
+            "$or": [
+                {"Titulo": {"$regex": busqueda, "$options": "i"}},
+                {"titulo": {"$regex": busqueda, "$options": "i"}}
+            ]
+        }
+
+    cursor = coleccion_juegos.find(query)
     all_juegos = []
-    csv_path = os.path.join(settings.BASE_DIR, 'datos', 'juegos.csv')
-    with open(csv_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            if busqueda and busqueda not in row['Titulo'].lower():
-                continue
-            all_juegos.append({
-                'code': row['Titulo'].replace(" ", "_"),
-                'name': row['Titulo'],
-            })
+    for doc in cursor:
+        titulo = doc.get('Titulo') or doc.get('titulo') or "Sin Título"
+        all_juegos.append({
+            'code': titulo.replace(" ", "_"),
+            'name': titulo,
+        })
 
-    # 2️⃣ Obtener top items de la sesión
+    # Resto de la lógica de slots (se mantiene igual)
     top_items_sesion = request.session.get('top_items', {})
-
-    # Lista de 10 slots, None si está vacío
     top_items_slots = [None] * 10
     for key, code in top_items_sesion.items():
         try:
@@ -105,31 +116,23 @@ def rankings(request):
         except (ValueError, IndexError):
             pass
 
-    # 3️⃣ Excluir juegos que ya están en los slots para la paginación
-    top_codes = set(code for code in top_items_sesion.values())
+    top_codes = set(top_items_sesion.values())
     juegos_para_pagina = [j for j in all_juegos if j['code'] not in top_codes]
 
-    # 4️⃣ Paginación solo para los juegos no-top
     paginator = Paginator(juegos_para_pagina, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    top_slots = list(range(1, 11))
-
     return render(request, 'ranking.html', {
-        'items': all_juegos,               # todos los juegos, para poder buscar por code
-        'top_items_slots': top_items_slots, # slots rellenados desde sesión
-        'top_slots': top_slots,
-        'page_obj': page_obj,              # solo los juegos no-top en la página actual
-        'busqueda': busqueda
+        'top_items_slots': top_items_slots,
+        'page_obj': page_obj,
+        'busqueda': busqueda,
+        'top_slots': range(1, 11)
     })
-
-
 
 
 def save_top(request):
     if request.method == 'POST':
-        import json
         data = json.loads(request.body)
         request.session['top_items'] = data
         request.session.modified = True

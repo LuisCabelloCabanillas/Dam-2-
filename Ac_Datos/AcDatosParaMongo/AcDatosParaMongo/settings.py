@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 
+from pymongo import MongoClient
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -121,3 +123,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+MONGO_CLIENT = MongoClient('mongodb://localhost:27017')
+MONGO_DB = MONGO_CLIENT['safarank']
