@@ -3,28 +3,40 @@
 
 {% block body %}
 <div class="container py-4">
-    <h2 class="text-center mb-4">Juegos Ranking</h2>
+    <h2 class="text-center mb-4">Ranking de Juegos</h2>
 
-    <!-- Filtro por nombre -->
+    <div class="mb-4 text-center">
+        <div class="btn-group flex-wrap" role="group">
+            {% for saga in sagas_disponibles %}
+                <a href="?saga={{ saga }}" class="btn btn-outline-primary {% if saga_actual == saga %}active{% endif %}">
+                    {{ saga }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="mb-3 text-center">
         <form method="get" class="d-flex justify-content-center">
-            <input type="text" name="nombre" class="form-control w-50 me-2" placeholder="Buscar juego..." value="{{ busqueda }}">
+            <input type="hidden" name="saga" value="{{ saga_actual }}">
+            <input type="text" name="nombre" class="form-control w-50 me-2" placeholder="Buscar en {{ saga_actual }}..." value="{{ busqueda }}">
             <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
     </div>
 
-    <!-- Contenedor del TOP 10 -->
-    <h4 class="text-center mb-4">Top 10</h4>
-    <div class="row g-3" id="top-slots">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>Top 10: {{ saga_actual }}</h4>
+        <button id="btn-save-db" class="btn btn-success">💾 Guardar Ranking en Base de Datos</button>
+    </div>
+
+    <div class="row g-3 mb-5" id="top-slots">
         {% for slot_juego in top_items_slots %}
-            <div class="col-2 col-md-2">
-                <div class="border rounded p-3 bg-white text-center slot" data-position="{{ forloop.counter }}">
-                    <h5 class="mb-3">{{ forloop.counter }}</h5>
-                    <div class="slot-drop-area" style="min-height: 80px; display:flex; align-items:center; justify-content:center;">
+            <div class="col-6 col-md-2">
+                <div class="border rounded p-2 bg-white text-center slot" data-position="{{ forloop.counter }}">
+                    <small class="text-muted">#{{ forloop.counter }}</small>
+                    <div class="slot-drop-area mt-2" style="min-height: 80px; border: 1px dashed #ccc; display:flex; align-items:center; justify-content:center;">
                         {% if slot_juego %}
-                            <div class="card p-3 text-center bg-light d-flex flex-column justify-content-center align-items-center"
-                                 data-id="{{ slot_juego.code }}" style="width: 100%;">
-                                <h6 class="m-0">{{ slot_juego.name }}</h6>
+                            <div class="card p-2 text-center bg-light" data-id="{{ slot_juego.code }}" style="width: 100%; cursor: grab;">
+                                <h6 class="m-0" style="font-size: 0.9rem;">{{ slot_juego.name }}</h6>
                             </div>
                         {% endif %}
                     </div>
@@ -33,15 +45,15 @@
         {% endfor %}
     </div>
 
-    <hr class="my-4">
+    <hr>
 
-    <h4 class="text-center mb-3">Todos los juegos</h4>
+    <h4 class="text-center mb-3">Juegos Disponibles</h4>
     <div class="row g-3" id="all-items">
         {% for item in page_obj %}
-            <div class="col-2 col-md-2">
-                <div class="card p-3 text-center bg-light d-flex flex-column justify-content-center align-items-center"
-                     data-id="{{ item.code }}">
-                    <h6 class="m-0">{{ item.name }}</h6>
+            <div class="col-4 col-md-2">
+                <div class="card p-2 text-center bg-light d-flex justify-content-center align-items-center"
+                     data-id="{{ item.code }}" style="min-height: 80px; cursor: grab;">
+                    <h6 class="m-0" style="font-size: 0.9rem;">{{ item.name }}</h6>
                 </div>
             </div>
         {% endfor %}
@@ -50,70 +62,52 @@
     <nav class="mt-4">
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&nombre={{ busqueda }}">Anterior</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&nombre={{ busqueda }}&saga={{ saga_actual }}">Anterior</a></li>
             {% endif %}
-
-            <li class="page-item disabled">
-                <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-            </li>
-
+            <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
             {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&nombre={{ busqueda }}">Siguiente</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&nombre={{ busqueda }}&saga={{ saga_actual }}">Siguiente</a></li>
             {% endif %}
         </ul>
     </nav>
 </div>
 
-<!-- SortableJS -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const allItems = document.getElementById('all-items');
 
-    // Hacer todos los juegos arrastrables
+    // Configuración de zona origen
     Sortable.create(allItems, {
-        group: {name: 'shared', pull: true, put: true},
-        sort: false,
+        group: 'shared',
         animation: 150,
-        onAdd: evt => {
-            saveTopItems()
-        }
+        sort: false
     });
 
-    // Hacer slots como zonas donde se pueden colocar juegos
+    // Configuración de slots
     document.querySelectorAll('.slot-drop-area').forEach(slotArea => {
         Sortable.create(slotArea, {
             group: 'shared',
             animation: 150,
             onAdd: evt => {
+                // Si ya hay un juego, devolvemos el nuevo al origen
                 if (slotArea.children.length > 1) {
-                    evt.from.appendChild(evt.item); // devuelve si ya hay uno
-                    return;
+                    evt.from.appendChild(evt.item);
+                } else {
+                    saveTopItems(false); // Guardado automático en sesión
                 }
-                evt.item.style.width = '100%';
-                saveTopItems(); // Guardamos al arrastrar
             },
-            onRemove: evt => {
-                saveTopItems(); // Guardamos si se quita del slot
-            }
+            onRemove: () => saveTopItems(false)
         });
     });
 
-    // Función para enviar el top al servidor
-    function saveTopItems() {
+    // Función UNIFICADA para guardar
+    function saveTopItems(isFinalSave = false) {
         const topData = {};
         document.querySelectorAll('.slot').forEach(slot => {
-            const id = slot.dataset.position;
+            const pos = slot.dataset.position;
             const item = slot.querySelector('[data-id]');
-            if (item) topData[id] = item.dataset.id;
+            if (item) topData[pos] = item.dataset.id;
         });
 
         fetch("{% url 'save_top' %}", {
@@ -122,22 +116,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': '{{ csrf_token }}'
             },
-            body: JSON.stringify(topData)
+            body: JSON.stringify({
+                items: topData,
+                saga: "{{ saga_actual }}"
+            })
+        }).then(response => {
+            if (isFinalSave && response.ok) {
+                alert("✅ Ranking de {{ saga_actual }} guardado permanentemente.");
+            }
         });
     }
+
+    // Evento botón guardar
+    document.getElementById('btn-save-db').addEventListener('click', () => saveTopItems(true));
 });
 </script>
 
 <style>
-.card {
-    width: 100%;
-    min-height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.slot { min-height: 80px; transition: background 0.2s; }
-.slot:hover { background-color: #f8f9fa; }
-.slot-drop-area { display: flex; justify-content: center; align-items: center; }
+    .slot-drop-area { border-radius: 8px; transition: all 0.3s; background: #fdfdfd; }
+    .slot-drop-area:hover { background: #f0f0f0; border-color: #0d6efd; }
+    .card { border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
+    .card:active { cursor: grabbing; }
 </style>
 {% endblock %}

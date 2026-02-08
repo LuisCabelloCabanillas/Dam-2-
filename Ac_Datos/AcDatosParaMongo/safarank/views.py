@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -7,85 +8,15 @@ from django.conf import settings  # Importamos settings para usar la conexión M
 # 1. Accedemos a la colección de juegos
 db = settings.MONGO_DB
 coleccion_juegos = db['juegos']  # 'juegos' es el nombre de la colección en Compass
-
-# 2. Tu diccionario de SAGAS se queda aquí
-SAGAS = {
-    "Profesor Layton": ["Professor Layton", "Layton", "Layton Brothers"],
-    "Ni no Kuni": ["Ni no Kuni"],
-    "Inazuma Eleven": ["Inazuma Eleven"],
-    "Danball Senki": ["Danball Senki", "LBX"],
-    "Fantasy Life": ["Fantasy Life"],
-    "Yo-kai Watch": ["Yo-kai Watch", "Youkai Watch", "Yo-Kai Watch", "Youkai uotchi"],
-    "Megaton Musashi": ["Megaton Musashi"],
-    "Rogue Galaxy": ["Rogue Galaxy"],
-    "Time Travelers": ["Time Travelers"],
-    "Weapon Shop De Omasse": ["Weapon Shop De Omasse"],
-    "White Knight Chronicles": ["White Knight Chronicles"],
-    "Kidou Senshi Gundam AGE": ["Kidou Senshi Gundam AGE"],
-    "Dragon Quest": ["Dragon Quest"],
-    "ParaWorld": ["ParaWorld"],
-    "Sloane to MacHale": ["Sloane to MacHale"],
-    "Snack World": ["Snack World"],
-    "Tago Akira no Atama no Taisou": ["Tago Akira no Atama no Taisou"],
-    "The Starship Damrey": ["The Starship Damrey"],
-    "Crimson Shroud": ["Crimson Shroud"],
-    "Attack of the Friday Monsters": ["Attack of the Friday Monsters"],
-    "Bugs vs Tanks": ["Bugs vs Tanks"],
-}
-
+coleccion_rankings = db['rankings_usuario']
 
 def mostrar_inicio(request):
     return render(request, 'inicio.html')
 
 
 def lista_juegos(request):
-    saga_filtro = request.GET.get('saga', "Todas")
+    busqueda = request.GET.get('nombre','').strip()
 
-    cursor = coleccion_juegos.find({})
-    juegos_list = []
-
-    for doc in cursor:
-        # Normalizamos los datos de la DB (por si vienen en mayúscula o minúscula)
-        titulo = doc.get('Titulo') or doc.get('titulo') or "Sin Título"
-        descripcion = doc.get('Descripcion') or doc.get('descripcion') or ""
-        plataforma = doc.get('Plataforma') or doc.get('plataforma') or ""
-        fecha = doc.get('Fecha') or doc.get('fecha') or ""
-        foto = doc.get('Foto') or doc.get('foto') or ""
-
-        # Lógica de detección de Saga
-        juego_saga = "Otras"
-        for saga, palabras in SAGAS.items():
-            if any(p.lower() in titulo.lower() for p in palabras):
-                juego_saga = saga
-                break
-
-        # FILTRO DE SAGA: Ahora comparamos correctamente
-        if saga_filtro != "Todas" and saga_filtro != juego_saga:
-            continue
-
-        juegos_list.append({
-            'Titulo': titulo,
-            'Plataforma': plataforma,
-            'Fecha': fecha,
-            'Descripcion': descripcion,
-            'Foto': foto,
-            'Saga': juego_saga
-        })
-
-    paginator = Paginator(juegos_list, 9)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'lista_juegos.html', {
-        'page_obj': page_obj,
-        'sagas': ["Todas"] + list(SAGAS.keys()),
-        'saga_filtro': saga_filtro
-    })
-
-def rankings(request):
-    busqueda = request.GET.get('nombre', '').strip()
-
-    # Búsqueda flexible en MongoDB para que encuentre por Titulo o titulo
     query = {}
     if busqueda:
         query = {
@@ -96,26 +27,92 @@ def rankings(request):
         }
 
     cursor = coleccion_juegos.find(query)
+    juegos_list = []
+
+    for doc in cursor:
+        titulo = doc.get('Titulo') or doc.get('titulo') or "Sin Título"
+        descripcion = doc.get('Descripcion') or doc.get('descripcion') or ""
+        plataforma = doc.get('Plataforma') or doc.get('plataforma') or ""
+        fecha = doc.get('Fecha') or doc.get('fecha') or ""
+
+        juegos_list.append({
+            'Titulo': titulo,
+            'Plataforma': plataforma,
+            'Fecha': fecha,
+            'Descripcion': descripcion
+        })
+
+
+
+    paginator = Paginator(juegos_list, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'lista_juegos.html', {
+        'page_obj': page_obj,
+        'busqueda': busqueda
+    })
+
+
+def rankings(request):
+    busqueda = request.GET.get('nombre', '').strip()
+    saga = request.GET.get('saga', 'Global')
+
+    # 1. Construcción inteligente de la Query
+    query = {}
+
+    # Filtro por Saga (si no es Global)
+    if saga != 'Global':
+        query["$or"] = [
+            {"Titulo": {"$regex": saga, "$options": "i"}},
+            {"titulo": {"$regex": saga, "$options": "i"}}
+        ]
+
+    # Filtro por Nombre (se añade a lo anterior si existe)
+    if busqueda:
+        # Usamos $and para que busque el nombre DENTRO de la saga seleccionada
+        busqueda_query = {
+            "$or": [
+                {"Titulo": {"$regex": busqueda, "$options": "i"}},
+                {"titulo": {"$regex": busqueda, "$options": "i"}}
+            ]
+        }
+        if query:  # Si ya había filtro de saga
+            query = {"$and": [query, busqueda_query]}
+        else:
+            query = busqueda_query
+
+    cursor = coleccion_juegos.find(query)
     all_juegos = []
+
+    # 2. Procesamiento de resultados
     for doc in cursor:
         titulo = doc.get('Titulo') or doc.get('titulo') or "Sin Título"
         all_juegos.append({
-            'code': titulo.replace(" ", "_"),
+            'code': titulo.replace(" ", "_"),  # ID único basado en nombre
             'name': titulo,
         })
 
-    # Resto de la lógica de slots (se mantiene igual)
-    top_items_sesion = request.session.get('top_items', {})
+    # 3. Lógica de Slots por Saga
+    session_key = f'top_items_{saga}'
+    top_items_sesion = request.session.get(session_key, {})
+
     top_items_slots = [None] * 10
     for key, code in top_items_sesion.items():
         try:
             index = int(key) - 1
-            juego = next((j for j in all_juegos if j['code'] == code), None)
-            if juego:
-                top_items_slots[index] = juego
+            # Buscamos el juego en la DB completa para que aparezca en el slot
+            # aunque no esté en los resultados de la búsqueda actual
+            juego_doc = coleccion_juegos.find_one({
+                "$or": [{"Titulo": code.replace("_", " ")}, {"titulo": code.replace("_", " ")}]
+            })
+            if juego_doc:
+                nombre_juego = juego_doc.get('Titulo') or juego_doc.get('titulo')
+                top_items_slots[index] = {'code': code, 'name': nombre_juego}
         except (ValueError, IndexError):
             pass
 
+    # Excluir juegos que ya están en el Top de la lista de abajo
     top_codes = set(top_items_sesion.values())
     juegos_para_pagina = [j for j in all_juegos if j['code'] not in top_codes]
 
@@ -124,17 +121,44 @@ def rankings(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'ranking.html', {
-        'top_items_slots': top_items_slots,
         'page_obj': page_obj,
+        'top_items_slots': top_items_slots,
         'busqueda': busqueda,
+        'saga_actual': saga,
+        'sagas_disponibles': ['Global', 'Inazuma Eleven', 'Professor Layton',
+                              'Yo-kai Watch', 'Ni no kuni','Danball Senki',
+                              'Megaton Musashi','Fantasy Life', 'Time Travelers',
+                              'Dragon Quest','Dark Cloud', 'White Knight Chronicles'],
         'top_slots': range(1, 11)
     })
 
 
 def save_top(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        request.session['top_items'] = data
-        request.session.modified = True
-        return JsonResponse({"status": "ok"})
+        try:
+            data = json.loads(request.body)
+            # Manejamos si los datos vienen directos o anidados
+            items = data.get('items') if 'items' in data else data
+            saga = data.get('saga', 'Global')
+
+            session_key = f'top_items_{saga}'
+            request.session[session_key] = items
+            request.session.modified = True
+
+            # Guardado en MongoDB
+            ranking_doc = {
+                "usuario": request.user.username if request.user.is_authenticated else "Anonimo",
+                "saga": saga,
+                "items": items,
+                "fecha_creacion": datetime.now()
+            }
+
+            coleccion_rankings.update_one(
+                {"usuario": ranking_doc["usuario"], "saga": saga},
+                {"$set": ranking_doc},
+                upsert=True
+            )
+            return JsonResponse({"status": "ok"})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
     return JsonResponse({"status": "error"}, status=400)

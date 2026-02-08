@@ -6,13 +6,11 @@ import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# 1. Configuración de Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AcDatosParaMongo.settings')
 django.setup()
 
-from safarank.models import Juego # Asegúrate de que el nombre de la app sea correcto
+from safarank.models import Juego
 
-# 2. Ruta al archivo (Ajusta el nombre del archivo según sea necesario)
 ruta_csv = os.path.join('datos', 'juegos.csv')
 
 def cargar_juegos():

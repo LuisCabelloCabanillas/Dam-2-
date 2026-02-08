@@ -5,14 +5,10 @@
 <div class="container py-4">
     <h2 class="text-center mb-4">Juegos de Level-5</h2>
 
-    <!-- Filtro por saga -->
     <div class="mb-3">
-        <form method="get">
-            <select name="saga" class="form-select" onchange="this.form.submit()">
-                {% for saga in sagas %}
-                    <option value="{{ saga }}" {% if saga == saga_filtro %}selected{% endif %}>{{ saga }}</option>
-                {% endfor %}
-            </select>
+        <form method="get" class="d-flex justify-content-center">
+            <input type="text" name="nombre" class="form-control w-50 me-2" placeholder="Buscar el nombre del juego...">
+            <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
     </div>
 
@@ -37,26 +33,28 @@
 
     <!-- Paginación -->
     <nav class="mt-4">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if saga_filtro %}&saga={{ saga_filtro }}{% endif %}">Anterior</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-            {% endif %}
-            <li class="page-item disabled">
-                <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if busqueda %}&nombre={{ busqueda }}{% endif %}">Anterior</a>
             </li>
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if saga_filtro %}&saga={{ saga_filtro }}{% endif %}">Siguiente</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
-            {% endif %}
-        </ul>
-    </nav>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+        {% endif %}
+
+        <li class="page-item disabled">
+            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+        </li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if busqueda %}&nombre={{ busqueda }}{% endif %}">Siguiente</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+        {% endif %}
+    </ul>
+</nav>
 </div>
 
 <style>
