@@ -1,13 +1,10 @@
 import json
 from datetime import datetime
-from wsgiref import headers
 
-from Tools.scripts.make_ctype import method
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.conf import settings  # Importamos settings para usar la conexión MONGO_DB
-from django.template.context_processors import request
+from django.conf import settings
 
 # 1. Accedemos a la colección de juegos
 db = settings.MONGO_DB
