@@ -2,36 +2,66 @@
 {% load static %}
 
 {% block body %}
-
 <div class="container d-flex flex-column justify-content-start align-items-center vh-100 pt-5">
 
     <div class="row g-4 justify-content-center w-100">
-
-        <div class="col-10 col-md-4">
-            <a href="{% url 'Lista_de_juegos' %}" class="text-decoration-none text-white">
-                <div class="card text-center text-white bg-dark-blue card-hover">
-                    <div class="card-body py-5">
-                        <img src="{% static 'images/juegos.png' %}" width="250" class="mb-3">
-                        <h3>Juegos</h3>
-                    </div>
-                </div>
-            </a>
-        </div>
-
         <div class="col-10 col-md-4">
             <a href="{% url 'Rankings' %}" class="text-decoration-none text-white">
-                <div class="card text-center text-white bg-purple card-hover">
+                <div class="card text-center text-white bg-dark-blue card-hover">
                     <div class="card-body py-5">
-                        <img src="{% static 'images/ranking.png' %}" width="215" class="mb-3">
-                        <h3>Rankings</h3>
+                        <img src="{% static 'images/rankings.png' %}" alt="Rankings" width="64" height="64" class="icon-white mb-3">
+                        <h3 class="card-title">Rankings</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-
+        <div class="col-10 col-md-4">
+            <a href="{% url 'go_home' %}" class="text-decoration-none text-white">
+                <div class="card text-center text-white bg-purple card-hover">
+                    <div class="card-body py-5">
+                        <img src="{% static 'images/reviews.png' %}" alt="Reviews" width="64" height="64" class="icon-white mb-3">
+                        <h3 class="card-title">Reviews</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 
+    <br><br>
+
+    <div class="row g-4 justify-content-center w-100">
+       <div class="col-10 col-md-4">
+            <a href="{% url 'data_load' %}" class="text-decoration-none text-white">
+                <div class="card text-center text-white bg-yellow card-hover">
+                    <div class="card-body py-5">
+                        <img src="{% static 'images/admin.png' %}" alt="Admin" width="64" height="64" class="icon-white mb-3">
+                        <h3 class="card-title">Admin</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-10 col-md-4">
+            <a href="{% url 'go_home' %}" class="text-decoration-none text-white">
+                <div class="card text-center text-white bg-blue card-hover">
+                    <div class="card-body py-5">
+                        <img src="{% static 'images/stats.png' %}" alt="Stats" width="64" height="64" class="icon-white mb-3">
+                        <h3 class="card-title">Stats</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
 
+<style>
+    .bg-dark-blue { background-color: #1a237e !important; }
+    .bg-purple { background-color: #6a1b9a !important; }
+    .bg-yellow { background-color: #fbc02d !important; }
+    .bg-blue { background-color: #0277bd !important; }
+    .card-hover { transition: transform 0.2s; border: none; border-radius: 15px; }
+    .card-hover:hover { transform: translateY(-5px); cursor: pointer; }
+    .icon-white { filter: brightness(0) invert(1); }
+</style>
 {% endblock %}
