@@ -7,9 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.utils import timezone
 
-# 1. Configuración de MongoDB
 db = settings.MONGO_DB
 coleccion_juegos = db['juegos']
 coleccion_rankings = db['rankings_usuario']
@@ -17,8 +15,28 @@ coleccion_rankings = db['rankings_usuario']
 
 # --- NAVEGACIÓN BÁSICA ---
 
+def go_conex(request):
+    return render(request, 'Select_conec.html')
+
+
+from .forms import RegisterForm, LoginForm  # Asegúrate de importar tu formulario
+
+
+def do_register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user=form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect('do_login')
+        else:
+            return render(request, 'register.html', {"form": form})
+    else:
+        form = RegisterForm()
+        return render(request, 'register.html', {"form": form})
+
 def go_home(request):
-    """Equivalente a mostrar_inicio"""
     return render(request, 'inicio.html')
 
 
@@ -31,23 +49,20 @@ def logout_user(request):
 
 def do_login(request):
     if request.method == 'POST':
-        # Asumiendo que tienes un LoginForm definido similar al ejemplo
-        from .forms import LoginForm
         form = LoginForm(request, data=request.POST)
+
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('go_home')
     else:
-        from .forms import LoginForm
         form = LoginForm()
     return render(request, 'login.html', {"form": form})
 
 
-# --- GESTIÓN DE JUEGOS Y RANKINGS ---
 
 def rankings(request):
     """Muestra el ranking interactivo (el que modificamos en el HTML anterior)"""

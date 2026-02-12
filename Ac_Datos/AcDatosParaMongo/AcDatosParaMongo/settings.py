@@ -124,5 +124,16 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+AUTH_USER_MODEL = 'safarank.User'
+
+DEFAULT_AUTO_FIELD = 'django_mongodb_backend.fields.ObjectIdAutoField'
+
 MONGO_CLIENT = MongoClient('mongodb://localhost:27017')
 MONGO_DB = MONGO_CLIENT['safarank']
+
+from django_mongodb_backend.fields import ObjectIdAutoField
+
+import django.db.models.options as options
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('mongodb_auto_id',)
+
+SILENCED_SYSTEM_CHECKS = ['mongodb.E001']
