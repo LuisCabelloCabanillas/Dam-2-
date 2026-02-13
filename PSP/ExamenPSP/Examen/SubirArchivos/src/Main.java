@@ -8,8 +8,8 @@ public class Main{
 
         // Configuración de conexión
         String servidor = "localhost";
-        String user = "usuario";
-        String pasw = "usuario";
+        String user = "Luis";
+        String pasw = "1234";
 
         try {
             // 1. SELECCIONAR EL FICHERO LOCAL
