@@ -6,7 +6,7 @@ import lombok.Data;
 public class FotosDTO {
     private Integer id;
     private Integer idEvento;
-    private String url;
+    private String foto;
 
 
 }

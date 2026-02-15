@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@capacitor-community/http';
 import { Evento } from '../models/evento';
+import { from, Observable } from 'rxjs'; // Necesario para el .subscribe() del TS
 
 @Injectable({ providedIn: 'root' })
 export class ListaEventosService {
@@ -8,6 +9,17 @@ export class ListaEventosService {
   private API = 'https://backend-q6zm.onrender.com';
 
   constructor() {}
+
+  guardarFoto(datos: { foto: string, id_eventos: number }): Observable<any> {
+    const options = {
+      url: `${this.API}/eventos/${datos.id_eventos}/galeria`,
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        foto: datos.foto // Este nombre debe ser igual al del DTO en Java
+      }
+    };
+    return from(Http.post(options));
+  }
 
   async obtenerEventos(): Promise<Evento[]> {
     const options = { url: `${this.API}/eventos/todos` };

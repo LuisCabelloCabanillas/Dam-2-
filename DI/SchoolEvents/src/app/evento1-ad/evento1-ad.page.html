@@ -12,7 +12,8 @@
 
   <div class="contenedor">
 
-    <img src="assets/icon/FotoCultural.png" class="evento-img" />
+    <img [src]="imagenSeleccionada ? 'data:image/jpeg;base64,' + imagenSeleccionada : 'assets/icon/FotoCultural.png'"
+         class="evento-img" />
 
     <h2 class="titulo-evento">{{ evento.nombre }}</h2>
 
@@ -35,6 +36,11 @@
       <h3 class="etiqueta">Requisitos del evento:</h3>
       <p class="texto">{{ evento.requisitos }}</p>
     </div>
+
+    <ion-button expand="block" class="btn-pago" (click)="subirFoto(evento.id)" color="secondary">
+      <ion-icon name="camera" slot="start"></ion-icon>
+      HACER FOTO DEL EVENTO
+    </ion-button>
 
     <ion-button expand="block" class="btn-pago" routerLink="/pago-ad">
       PROCEDER AL PAGO

@@ -22,7 +22,7 @@ public class Fotos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "foto")
+    @Column(name = "foto", columnDefinition = "TEXT")
     private String foto;
 
     @ManyToOne
