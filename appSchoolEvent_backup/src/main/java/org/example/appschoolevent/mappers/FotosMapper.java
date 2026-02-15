@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface FotosMapper {
+
     @Mapping(target = "idEvento", source = "evento.id")
-    @Mapping(target = "url", source = "foto")
     FotosDTO toDTO(Fotos foto);
 }
