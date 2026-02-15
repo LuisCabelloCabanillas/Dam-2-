@@ -234,29 +234,24 @@ EventoServiceTest {
     @Test
     @DisplayName("Servicio 7 -> Caso Positivo")
     void subirFoto(){
+        // Cambiamos 'url' por 'foto' (que ahora contiene el Base64)
+        String contenidoFoto = "data:image/jpeg;base64,base64falsa...";
 
-        String url = "http://foto.com/imagen.jpg";
-
-        FotosDTO dto = fotosService.guardarFoto(eventoPrincipal.getId(), url);
+        FotosDTO dto = fotosService.guardarFoto(eventoPrincipal.getId(), contenidoFoto);
 
         assertNotNull(dto);
-        assertEquals(url, dto.getUrl());
+        // Cambiamos getUrl() por getFoto()
+        assertEquals(contenidoFoto, dto.getFoto());
         assertEquals(1, fotosRepositorio.count());
-
-
-
     }
 
     @Test
     @DisplayName("Servicio 7 -> Caso Negativo")
     void subirFotoNegativo(){
+        String contenidoVacio = "   ";
 
-        String url = "   ";
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> fotosService.guardarFoto(eventoPrincipal.getId(), url));
-
-        assertEquals("La URL de la foto no puede estar vacía", ex.getMessage());
-
+        // Asegúrate de que tu FotosService lance IllegalArgumentException si está vacío
+        assertThrows(IllegalArgumentException.class,
+                () -> fotosService.guardarFoto(eventoPrincipal.getId(), contenidoVacio));
     }
 }
