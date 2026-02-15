@@ -37,7 +37,7 @@
       <p class="texto">{{ evento.requisitos }}</p>
     </div>
 
-    <ion-button expand="block" class="btn-pago" (click)="subirFoto(evento.id)" color="secondary">
+    <ion-button expand="block" class="btn-pago" (click)="subirFoto(evento?.id)" color="secondary">
       <ion-icon name="camera" slot="start"></ion-icon>
       HACER FOTO DEL EVENTO
     </ion-button>

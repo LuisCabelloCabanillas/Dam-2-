@@ -51,37 +51,40 @@ export class Evento1AdPage implements OnInit {
   }
 
   // --- LÓGICA DE LA CÁMARA PARA TU IPHONE ---
-  async subirFoto(idEvento: number) {
+  // Añadimos el ? en idEvento para que acepte "number | undefined"
+  async subirFoto(idEvento?: number) {
+    // Si no hay ID, cortamos la función para evitar errores
+    if (idEvento === undefined) {
+      this.mostrarToast('Error: El ID del evento no es válido', 'danger');
+      return;
+    }
+
     try {
       const image = await Camera.getPhoto({
-        quality: 50, // Calidad media para no saturar PostgreSQL en Render
+        quality: 40,
         allowEditing: false,
-        resultType: CameraResultType.Base64, // Obtenemos el string para el HTML y la BD
-        source: CameraSource.Prompt // Esto permite elegir Cámara o Galería en Safari
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Prompt
       });
 
       if (image.base64String) {
-        // 1. Actualizamos la vista previa inmediatamente
         this.imagenSeleccionada = image.base64String;
 
-        // 2. Preparamos el objeto para enviar a Spring Boot
         const datosFoto = {
           foto: image.base64String,
-          id_eventos: idEvento
+          id_eventos: idEvento // Aquí ya estamos seguros de que es un number
         };
 
         this.eventoService.guardarFoto(datosFoto).subscribe({
-          next: () => {
-            this.mostrarToast('Foto guardada correctamente en el evento', 'success');
-          },
-          error: (err: any) => {
-            console.error('Error al guardar en la base de datos:', err);
-            this.mostrarToast('Error al subir la foto a la base de datos', 'danger');
+          next: () => this.mostrarToast('Foto guardada', 'success'),
+          error: (err) => {
+            console.error(err);
+            this.mostrarToast('Error al subir', 'danger');
           }
         });
       }
     } catch (error) {
-      console.log('El usuario canceló la captura');
+      console.log('Cámara cancelada');
     }
   }
 
