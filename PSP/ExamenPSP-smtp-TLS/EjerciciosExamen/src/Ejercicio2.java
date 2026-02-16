@@ -3,14 +3,13 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.smtp.AuthenticatingSMTPClient;
 import org.apache.commons.net.smtp.SMTPReply;
 import org.apache.commons.net.smtp.SimpleSMTPHeader;
-
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class GestionServidorFTP {
 
+public class Ejercicio2 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         FTPClient ftpClient = new FTPClient();
@@ -73,42 +72,42 @@ public class GestionServidorFTP {
         enviarCorreo(usuariosCorrectos);
     }
 
-    private static void enviarCorreo(int cantidad) {
+    private static void enviarCorreo(int cantidad){
         String server = "smtp.gmail.com";
         int port = 587;
         String remitente = "lcabellocabanillas@safareyes.es";
         String password = "wfbf nmif bwkk xlbu";
-        String destino = "lcabellocabanillas@safareyes.es";
+        String destinatario = "lcabellocabanillas@safareyes.es";
 
-        AuthenticatingSMTPClient client = new AuthenticatingSMTPClient();
+        AuthenticatingSMTPClient cliente = new AuthenticatingSMTPClient();
 
-        try {
-            client.connect(server, port);
-            if (!SMTPReply.isPositiveCompletion(client.getReplyCode())) {
-                client.disconnect();
+        try{
+            cliente.connect(server, port);
+            if(!SMTPReply.isPositiveCompletion(cliente.getReplyCode())){
+                cliente.disconnect();
                 return;
             }
 
-            client.execTLS();
-            if (client.auth(AuthenticatingSMTPClient.AUTH_METHOD.LOGIN, remitente, password)) {
+            cliente.execTLS();
+            if(cliente.auth(AuthenticatingSMTPClient.AUTH_METHOD.LOGIN, remitente, password)){
+                SimpleSMTPHeader header = new SimpleSMTPHeader(remitente,destinatario, "Resumen Conexiones FTP");
+                cliente.setSender(remitente);
+                cliente.addRecipient(destinatario);
 
-                SimpleSMTPHeader header = new SimpleSMTPHeader(remitente, destino, "Resumen Conexiones FTP");
-                client.setSender(remitente);
-                client.addRecipient(destino);
-
-                Writer writer = client.sendMessageData();
-                if (writer != null) {
+                Writer writer = cliente.sendMessageData();
+                if(writer != null){
                     writer.write(header.toString());
-                    writer.write("Número de usuarios conectados correctamente: " + cantidad);
+                    writer.write("Número de usuarios conectados válidamente son de " + cantidad);
                     writer.close();
-                    client.completePendingCommand();
+                    cliente.completePendingCommand();
                 }
             }
-            client.logout();
-            client.disconnect();
-            System.out.println("Correo enviado con éxito.");
-        } catch (Exception e) {
+            cliente.logout();
+            cliente.disconnect();
+            System.out.println("Correo enviado correctamente");
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
+
 }
