@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container py-5">
+    <h3 class="mb-4 text-center" style="color: #062D76">Gestión de Categorías</h3>
+
+    <div class="card shadow-sm mb-5">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Nombre de la Categoría</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in categories %}
+                <tr>
+                    <td><strong>{{ item.name }}</strong></td>
+                    <td class="text-center">
+                        <a href="{% url 'delete_category' item.code %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-4 bg-light border-0 shadow-sm">
+                <h5>Nueva Categoría</h5>
+                <form method="POST" id="categoryForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="name" required placeholder="Ej: Favoritos">
+                    </div>
+                    <input type="hidden" name="selected_games" id="selectedGamesInput">
+                    <button type="submit" class="btn btn-primary w-100" style="background-color: #062D76;">Crear Categoría</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0">Selecciona juegos:</h5>
+                <form method="get" class="d-flex w-50">
+                    <input type="text" name="nombre" class="form-control form-control-sm me-2" placeholder="Buscar juego..." value="{{ busqueda }}">
+                    <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+                </form>
+            </div>
+
+            <div class="row g-2 mb-4" id="game-selector">
+                {% for game in page_obj %}
+                <div class="col-6 col-sm-4">
+                    <div class="card h-100 game-item p-3 text-center d-flex align-items-center justify-content-center" 
+                         data-name="{{ game.name }}" style="cursor: pointer; transition: 0.2s; border: 1px solid #dee2e6;">
+                        <div style="font-size: 0.85rem; font-weight: bold;">{{ game.name }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&nombre={{ busqueda }}">Anterior</a></li>
+                    {% endif %}
+                    <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&nombre={{ busqueda }}">Siguiente</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<style>
+    .game-item.selected { 
+        background-color: #062D76 !important; 
+        color: white !important; 
+        border-color: #062D76 !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.game-item');
+    
+    cards.forEach(c => {
+        c.addEventListener('click', () => {
+            c.classList.toggle('selected');
+        });
+    });
+
+    document.getElementById('categoryForm').addEventListener('submit', (e) => {
+        const selected = Array.from(cards)
+            .filter(c => c.classList.contains('selected'))
+            .map(c => c.dataset.name);
+            
+        document.getElementById('selectedGamesInput').value = JSON.stringify(selected);
+    });
+});
+</script>
+{% endblock %}

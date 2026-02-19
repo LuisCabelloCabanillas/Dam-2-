@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(
@@ -14,15 +15,14 @@ class RegisterForm(forms.ModelForm):
     )
 
     class Meta:
+        # 4. Ahora 'model' apuntará automáticamente a 'safarank.User'
         model = User
-        # Asegúrate de que estos nombres coincidan con los de tu models.py
         fields = ('username', 'email', 'password')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
-    # Validación para comprobar que las contraseñas coinciden
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
@@ -34,8 +34,6 @@ class RegisterForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    # El AuthenticationForm de Django ya sabe manejar el USERNAME_FIELD
-    # de tu modelo, solo le damos estilo si es necesario.
     username = forms.CharField(
         label="Nombre de usuario",
         widget=forms.TextInput(attrs={'class': 'form-control'})

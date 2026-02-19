@@ -1,6 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
-
 {% block body %}
 <div class="container py-4">
     <h2 class="text-center mb-4">Ranking de Juegos</h2>
@@ -18,7 +16,7 @@
     <div class="mb-4 text-center">
         <form method="get" class="d-flex justify-content-center">
             <input type="hidden" name="saga" value="{{ saga_actual }}">
-            <input type="text" name="nombre" class="form-control w-50 me-2" placeholder="Buscar en {{ saga_actual }}..." value="{{ busqueda }}">
+            <input type="text" name="nombre" class="form-control w-50 me-2" placeholder="Buscar..." value="{{ busqueda }}">
             <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
     </div>
@@ -28,18 +26,11 @@
     <div class="row g-3 mb-5 justify-content-center" id="top-slots">
         {% for juego in top_items_slots %}
             <div class="col-6 col-sm-4 col-md-2-custom">
-                <div class="slot-card slot {% if forloop.counter == 1 %}gold{% elif forloop.counter == 2 %}silver{% elif forloop.counter == 3 %}bronze{% endif %}"
-                     data-position="{{ forloop.counter }}">
-
-                    <div class="slot-header">
-                        <span class="rank-number">{{ forloop.counter }}</span>
-                    </div>
-
+                <div class="slot-card slot {% if forloop.counter == 1 %}gold{% elif forloop.counter == 2 %}silver{% elif forloop.counter == 3 %}bronze{% endif %}" data-position="{{ forloop.counter }}">
+                    <div class="slot-header"><span class="rank-number">{{ forloop.counter }}</span></div>
                     <div class="slot-drop-area">
                         {% if juego %}
-                            <div class="card-juego" data-id="{{ juego.code }}">
-                                <h6>{{ juego.name }}</h6>
-                            </div>
+                            <div class="card-juego" data-id="{{ juego.code }}"><h6>{{ juego.name }}</h6></div>
                         {% endif %}
                     </div>
                 </div>
@@ -47,15 +38,13 @@
         {% endfor %}
     </div>
 
-    <hr class="my-5">
+    <hr>
 
-    <h4 class="text-center mb-3">Juegos Disponibles</h4>
+    <h4 class="text-center mb-3">Disponibles</h4>
     <div class="row g-3" id="all-items">
         {% for item in page_obj %}
             <div class="col-4 col-md-2">
-                <div class="card-juego" data-id="{{ item.code }}">
-                    <h6>{{ item.name }}</h6>
-                </div>
+                <div class="card-juego" data-id="{{ item.code }}"><h6>{{ item.name }}</h6></div>
             </div>
         {% endfor %}
     </div>
@@ -73,8 +62,8 @@
     </nav>
 
     <div class="text-center mt-5 mb-5">
-        <button id="btn-save-db" class="btn btn-lg btn-success px-5">Guardar en Base de Datos</button>
-        <button id="btn-reset" class="btn btn-lg btn-outline-danger ms-2">Reiniciar</button>
+        <button id="btn-save-db" class="btn btn-lg btn-success">Guardar Ranking</button>
+        <button id="btn-reset" class="btn btn-lg btn-outline-danger">Reiniciar</button>
     </div>
 </div>
 
@@ -171,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         font-weight: 600; color: #333; line-height: 1.2;
     }
 
-    /* Estilo sin bordes dentro del Top */
+    
     .slot-drop-area .card-juego {
         border: none !important; background: transparent !important;
         box-shadow: none !important; padding: 0 !important;
